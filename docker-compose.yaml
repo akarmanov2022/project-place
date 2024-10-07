@@ -1,0 +1,30 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=project-place'
+      - 'POSTGRES_PASSWORD=project-place'
+      - 'POSTGRES_USER=project-place'
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    container_name: project-place-backend
+    build: .
+    command: ./gradlew bootRun
+    depends_on:
+      - postgres
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/project-place
+      SPRING_DATASOURCE_USERNAME: project-place
+      SPRING_DATASOURCE_PASSWORD: project-place
+    ports:
+      - '8080:8080'
+    volumes:
+      - .:/app
+    working_dir: /app
+
+volumes:
+  postgres_data:
