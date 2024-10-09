@@ -39,11 +39,6 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
-                  name: photo
-                  type: BLOB
-                  constraints:
-                    nullable: true
-              - column:
                   name: role
                   type: VARCHAR(32)
                   constraints:
@@ -345,3 +340,41 @@ databaseChangeLog:
             referencedTableName: trackers
             referencedColumnNames: id
             constraintName: fk_streams_trackers_tracker
+  - changeSet:
+      id: project-place-8
+      author: akarmanov
+      preConditions:
+        - not:
+            - tableExists:
+                tableName: user_photos
+      changes:
+        - createTable:
+            tableName: user_photos
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: UUID
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: photo
+                  type: BLOB
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: user_photos
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_user_photos_user

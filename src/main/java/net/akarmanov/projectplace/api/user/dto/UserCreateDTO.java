@@ -1,19 +1,18 @@
-package net.akarmanov.projectplace.api.user;
+package net.akarmanov.projectplace.api.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
+import net.akarmanov.projectplace.api.user.UserRoleDto;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
-    private UUID id;
+public class UserCreateDTO {
     @NotBlank
     private String firstName;
     @NotBlank
@@ -24,8 +23,6 @@ public class UserDTO {
     private String phoneNumber;
     @NotBlank
     private String telegramId;
-    private String photo;
-    @NotBlank
-    private String role;
-
+    @NotNull
+    private UserRoleDto role = UserRoleDto.TRACKER;
 }

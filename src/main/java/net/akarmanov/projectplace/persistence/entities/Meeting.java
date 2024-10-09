@@ -33,7 +33,7 @@ public class Meeting extends AbstractEntity {
 
     @Lob
     @Basic(fetch = FetchType.LAZY)
-    @Column(name = "screenshot", columnDefinition = "BLOB NOT NULL")
+    @Column(name = "screenshot")
     private byte[] screenshot;
 
     @Size(max = 32)

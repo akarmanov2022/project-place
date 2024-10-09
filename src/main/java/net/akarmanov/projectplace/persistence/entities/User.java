@@ -38,13 +38,12 @@ public class User extends AbstractEntity {
     @Column(name = "telegram_id", length = 32)
     private String telegramId;
 
-    @Lob
-    @Column(name = "photo")
-    private byte[] photo;
-
     @NotNull
     @Column(name = "role", nullable = false, length = 32)
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private UserPhoto photo;
 
 }

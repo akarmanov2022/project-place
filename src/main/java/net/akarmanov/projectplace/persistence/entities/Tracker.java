@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,7 +21,7 @@ public class Tracker extends AbstractEntity {
 
     @NotNull
     @Column(name = "create_date", nullable = false)
-    private Instant createDate;
+    private LocalDateTime createDate;
 
     @Size(max = 32)
     @NotNull

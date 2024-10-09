@@ -3,7 +3,6 @@ package net.akarmanov.projectplace.persistence.entities;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.Hibernate;
@@ -11,6 +10,7 @@ import org.hibernate.Hibernate;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,15 +18,14 @@ import java.util.Objects;
 public class StreamsTrackerId implements Serializable {
     @Serial
     private static final long serialVersionUID = 1548464870812443378L;
-    @Size(max = 32)
+
     @NotNull
     @Column(name = "stream_id", nullable = false, length = 32)
-    private String streamId;
+    private UUID streamId;
 
-    @Size(max = 32)
     @NotNull
     @Column(name = "tracker_id", nullable = false, length = 32)
-    private String trackerId;
+    private UUID trackerId;
 
     @Override
     public boolean equals(Object o) {

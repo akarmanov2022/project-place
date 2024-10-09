@@ -30,8 +30,8 @@ public class Task extends AbstractEntity {
     @Column(name = "description", length = Integer.MAX_VALUE)
     private String description;
 
-    @Size(max = 32)
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 32)
     private TaskStatus status;
 

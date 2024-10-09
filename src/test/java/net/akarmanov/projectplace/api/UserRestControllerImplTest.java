@@ -52,15 +52,4 @@ class UserRestControllerImplTest extends BaseApplicationTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
-
-    @Test
-    void updateUser_success() throws Exception {
-        final var content = Files.readString(createUserResource.getFile().toPath());
-
-        mockMvc.perform(post("/api/v1/users/update")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(content))
-                .andDo(print())
-                .andExpect(status().isOk());
-    }
 }

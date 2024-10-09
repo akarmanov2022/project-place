@@ -1,7 +1,8 @@
 package net.akarmanov.projectplace.services;
 
-import net.akarmanov.projectplace.api.user.UserDTO;
-import net.akarmanov.projectplace.configuration.ModelMapperConfiguration;
+import net.akarmanov.projectplace.api.user.UserRoleDto;
+import net.akarmanov.projectplace.api.user.dto.UserCreateDTO;
+import net.akarmanov.projectplace.api.user.dto.UserDTO;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
@@ -9,12 +10,8 @@ import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -22,24 +19,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 @ActiveProfiles("test")
 class UserServiceImplIntegrationTest {
-
-    @TestConfiguration
-    @Import(ModelMapperConfiguration.class)
-    static class UserServiceImplTestContextConfiguration {
-        @Autowired
-        private UserRepository userRepository;
-
-        @Autowired
-        private ModelMapper modelMapper;
-
-        @Bean
-        public UserService userService() {
-            return new UserServiceImpl(modelMapper, userRepository);
-        }
-    }
 
     @Autowired
     private UserService userService;
@@ -59,7 +41,6 @@ class UserServiceImplIntegrationTest {
         user.setPhoneNumber("123456789");
         user.setTelegramId("telegramId");
         user.setRole(UserRole.ADMIN);
-        user.setPhoto(new byte[]{1, 2, 3, 4, 5});
         user = userRepository.save(user);
     }
 
@@ -87,13 +68,13 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void testCreateUser() {
-        UserDTO newUserDTO = UserDTO.builder()
+        var newUserDTO = UserCreateDTO.builder()
                 .firstName("Jane")
                 .lastName("Doe")
                 .middleName("Middle")
                 .phoneNumber("987654321")
                 .telegramId("newTelegramId")
-                .role("ADMIN")
+                .role(UserRoleDto.ADMIN)
                 .build();
 
         UserDTO createdUserDTO = userService.createUser(newUserDTO);
@@ -112,7 +93,7 @@ class UserServiceImplIntegrationTest {
         assertEquals(newUserDTO.getMiddleName(), createdUser.get().getMiddleName());
         assertEquals(newUserDTO.getPhoneNumber(), createdUser.get().getPhoneNumber());
         assertEquals(newUserDTO.getTelegramId(), createdUser.get().getTelegramId());
-        assertEquals(newUserDTO.getRole(), createdUser.get().getRole().toString());
+        assertEquals(newUserDTO.getRole().toString(), createdUser.get().getRole().toString());
     }
 
     @Test
@@ -123,7 +104,7 @@ class UserServiceImplIntegrationTest {
                 .middleName("Middle")
                 .phoneNumber("123456789")
                 .telegramId("updatedTelegramId")
-                .role("ADMIN")
+                .role(UserRoleDto.ADMIN)
                 .build();
 
         UserDTO updatedUserDTO = userService.updateUser(user.getId(), updateUserDTO);
@@ -142,7 +123,7 @@ class UserServiceImplIntegrationTest {
         assertEquals(updateUserDTO.getMiddleName(), updatedUser.get().getMiddleName());
         assertEquals(updateUserDTO.getPhoneNumber(), updatedUser.get().getPhoneNumber());
         assertEquals(updateUserDTO.getTelegramId(), updatedUser.get().getTelegramId());
-        assertEquals(updateUserDTO.getRole(), updatedUser.get().getRole().toString());
+        assertEquals(updateUserDTO.getRole().toString(), updatedUser.get().getRole().toString());
     }
 
     @Test
