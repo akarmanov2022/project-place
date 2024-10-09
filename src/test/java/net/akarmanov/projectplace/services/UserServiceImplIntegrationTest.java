@@ -1,6 +1,7 @@
 package net.akarmanov.projectplace.services;
 
 import net.akarmanov.projectplace.api.UserDTO;
+import net.akarmanov.projectplace.configuration.ModelMapperConfiguration;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
@@ -8,16 +9,37 @@ import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest
+@DataJpaTest
+@ActiveProfiles("test")
 class UserServiceImplIntegrationTest {
+
+    @TestConfiguration
+    @Import(ModelMapperConfiguration.class)
+    static class UserServiceImplTestContextConfiguration {
+        @Autowired
+        private UserRepository userRepository;
+
+        @Autowired
+        private ModelMapper modelMapper;
+
+        @Bean
+        public UserService userService() {
+            return new UserServiceImpl(modelMapper, userRepository);
+        }
+    }
 
     @Autowired
     private UserService userService;
