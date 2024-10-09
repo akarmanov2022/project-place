@@ -2,7 +2,9 @@ package net.akarmanov.projectplace.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.UUID;
 
@@ -11,7 +13,9 @@ import java.util.UUID;
  */
 @Setter
 @Getter
+@SuperBuilder
 @MappedSuperclass
+@NoArgsConstructor
 public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

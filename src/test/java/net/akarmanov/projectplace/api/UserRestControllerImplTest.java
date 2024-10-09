@@ -10,7 +10,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -35,9 +35,29 @@ class UserRestControllerImplTest extends BaseApplicationTest {
     @Test
     void createUser_success() throws Exception {
 
-        final var content = createUserResource.getContentAsString(StandardCharsets.UTF_8);
+        final var content = Files.readString(createUserResource.getFile().toPath());
 
         mockMvc.perform(post("/api/v1/users/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(content))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void createUser_badRequest() throws Exception {
+        mockMvc.perform(post("/api/v1/users/create")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{}"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void updateUser_success() throws Exception {
+        final var content = Files.readString(createUserResource.getFile().toPath());
+
+        mockMvc.perform(post("/api/v1/users/update")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content))
                 .andDo(print())

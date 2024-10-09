@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api;
+package net.akarmanov.projectplace.api.user;
 
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ public interface UserRestController {
 
     @RequestMapping("/update")
     ResponseEntity<UserDTO> updateUser(@RequestParam UUID id,
-                                       @RequestBody UserDTO request);
+                                       @RequestBody @Valid UserDTO request);
 
     @RequestMapping("/delete")
     ResponseEntity<UserDTO> deleteUser(@RequestParam String id);

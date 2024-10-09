@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api;
+package net.akarmanov.projectplace.api.user;
 
 import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.services.UserService;

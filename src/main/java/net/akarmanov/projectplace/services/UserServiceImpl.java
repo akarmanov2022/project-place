@@ -1,7 +1,7 @@
 package net.akarmanov.projectplace.services;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.api.UserDTO;
+import net.akarmanov.projectplace.api.user.UserDTO;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;

@@ -4,13 +4,17 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import net.akarmanov.projectplace.models.UserRole;
 
 @Getter
 @Setter
 @Entity
+@SuperBuilder
 @Table(name = "users")
+@NoArgsConstructor
 public class User extends AbstractEntity {
 
     @Size(max = 255)

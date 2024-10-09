@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services;
 
-import net.akarmanov.projectplace.api.UserDTO;
+import net.akarmanov.projectplace.api.user.UserDTO;
 
 import java.util.UUID;
 

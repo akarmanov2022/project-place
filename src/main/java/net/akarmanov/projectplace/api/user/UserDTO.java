@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api;
+package net.akarmanov.projectplace.api.user;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

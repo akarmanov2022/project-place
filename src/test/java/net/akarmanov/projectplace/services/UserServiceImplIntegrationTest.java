@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services;
 
-import net.akarmanov.projectplace.api.UserDTO;
+import net.akarmanov.projectplace.api.user.UserDTO;
 import net.akarmanov.projectplace.configuration.ModelMapperConfiguration;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
