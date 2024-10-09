@@ -5,6 +5,8 @@ import net.akarmanov.projectplace.services.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequiredArgsConstructor
 public class UserRestControllerImpl implements UserRestController {
@@ -12,8 +14,8 @@ public class UserRestControllerImpl implements UserRestController {
     private final UserService userService;
 
     @Override
-    public ResponseEntity<UserDTO> getUser(UserDTO request) {
-        final var user = userService.getUser(request);
+    public ResponseEntity<UserDTO> getUser(String id) {
+        final var user = userService.getUser(id);
         return ResponseEntity.ok(user);
     }
 
@@ -24,8 +26,8 @@ public class UserRestControllerImpl implements UserRestController {
     }
 
     @Override
-    public ResponseEntity<UserDTO> updateUser(UserDTO request) {
-        final var user = userService.updateUser(request);
+    public ResponseEntity<UserDTO> updateUser(UUID id, UserDTO userDTO) {
+        final var user = userService.updateUser(id, userDTO);
         return ResponseEntity.ok(user);
     }
 

@@ -13,7 +13,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -65,13 +65,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: user_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
@@ -103,13 +103,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: tracker_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
@@ -146,13 +146,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: team_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
@@ -199,7 +199,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
@@ -236,13 +236,13 @@ databaseChangeLog:
             columns:
               - column:
                   name: id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
                   name: meeting_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
@@ -284,12 +284,12 @@ databaseChangeLog:
             columns:
               - column:
                   name: stream_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
                   name: team_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
         - addPrimaryKey:
@@ -321,12 +321,12 @@ databaseChangeLog:
             columns:
               - column:
                   name: stream_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
                   name: tracker_id
-                  type: VARCHAR(32)
+                  type: UUID
                   constraints:
                     nullable: false
         - addPrimaryKey:

@@ -1,11 +1,19 @@
 package net.akarmanov.projectplace.api;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.UUID;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDTO {
-    private String id;
+    private UUID id;
     @NotBlank
     private String firstName;
     @NotBlank

@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.persistence.entities;
+package net.akarmanov.projectplace.models;
 
 import lombok.Getter;
 

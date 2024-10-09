@@ -2,14 +2,15 @@ package net.akarmanov.projectplace.services;
 
 import net.akarmanov.projectplace.api.UserDTO;
 
+import java.util.UUID;
+
 public interface UserService {
-    UserDTO getUser(UserDTO request);
+    UserDTO getUser(String id);
 
-    UserDTO createUser(UserDTO request);
+    UserDTO createUser(UserDTO userDTO);
 
-    UserDTO updateUser(UserDTO request);
+    UserDTO updateUser(UUID id, UserDTO userDTO);
 
     void deleteUser(String id);
 
-    UserDTO getUserById(String id);
 }

@@ -1,8 +1,8 @@
 package net.akarmanov.projectplace.configuration;
 
 import net.akarmanov.projectplace.api.UserDTO;
+import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
-import net.akarmanov.projectplace.persistence.entities.UserRole;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
