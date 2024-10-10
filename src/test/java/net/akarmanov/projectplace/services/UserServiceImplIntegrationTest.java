@@ -51,19 +51,19 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void testGetUser_success() {
-        UserDTO userDTO = userService.getUser(user.getId().toString());
+        UserDTO userDTO = userService.getUser(user.getId());
         assertNotNull(userDTO);
         assertEquals(user.getFirstName(), userDTO.getFirstName());
         assertEquals(user.getLastName(), userDTO.getLastName());
         assertEquals(user.getMiddleName(), userDTO.getMiddleName());
         assertEquals(user.getPhoneNumber(), userDTO.getPhoneNumber());
         assertEquals(user.getTelegramId(), userDTO.getTelegramId());
-        assertEquals(user.getRole().toString(), userDTO.getRole());
+        assertEquals(user.getRole().toString(), userDTO.getRole().toString());
     }
 
     @Test
     void testGetUser_notFound() {
-        assertThrows(UserNotFoundException.class, () -> userService.getUser(UUID.randomUUID().toString()));
+        assertThrows(UserNotFoundException.class, () -> userService.getUser(UUID.randomUUID()));
     }
 
     @Test

@@ -2,13 +2,13 @@ package net.akarmanov.projectplace.services;
 
 import net.akarmanov.projectplace.api.user.dto.UserCreateDTO;
 import net.akarmanov.projectplace.api.user.dto.UserDTO;
-import net.akarmanov.projectplace.persistence.entities.UserPhoto;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
-    UserDTO getUser(String id);
+    UserDTO getUser(UUID id);
 
     UserDTO createUser(UserCreateDTO userCreateDTO);
 
@@ -18,7 +18,5 @@ public interface UserService {
 
     void addPhoto(UUID userId, MultipartFile file);
 
-    UserPhoto getPhoto(UUID id);
-
-    UserDTO getUser(UUID id);
+    List<UserDTO> getUsers();
 }

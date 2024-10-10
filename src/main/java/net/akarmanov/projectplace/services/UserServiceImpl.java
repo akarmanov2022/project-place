@@ -6,13 +6,14 @@ import lombok.SneakyThrows;
 import net.akarmanov.projectplace.api.user.dto.UserCreateDTO;
 import net.akarmanov.projectplace.api.user.dto.UserDTO;
 import net.akarmanov.projectplace.persistence.entities.User;
-import net.akarmanov.projectplace.persistence.entities.UserPhoto;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,10 +27,9 @@ public class UserServiceImpl implements UserService {
     private final UserPhotoService userPhotoService;
 
     @Override
-    public UserDTO getUser(String id) {
-        var uuid = UUID.fromString(id);
-        var user = userRepository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException(uuid));
+    public UserDTO getUser(UUID id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(id));
         return modelMapper.map(user, UserDTO.class);
     }
 
@@ -66,17 +66,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserPhoto getPhoto(UUID id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-        return user.getPhoto();
+    public List<UserDTO> getUsers() {
+        var users = userRepository.findAll();
+        return modelMapper.map(users, new TypeToken<List<UserDTO>>() {
+        }.getType());
     }
-
-    @Override
-    public UserDTO getUser(UUID id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException(id));
-        return modelMapper.map(user, UserDTO.class);
-    }
-
 }

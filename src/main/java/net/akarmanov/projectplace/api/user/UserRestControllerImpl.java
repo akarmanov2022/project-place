@@ -5,12 +5,15 @@ import net.akarmanov.projectplace.api.user.dto.UserCreateDTO;
 import net.akarmanov.projectplace.api.user.dto.UserDTO;
 import net.akarmanov.projectplace.services.UserPhotoService;
 import net.akarmanov.projectplace.services.UserService;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,9 +25,15 @@ public class UserRestControllerImpl implements UserRestController {
     private final UserPhotoService userPhotoService;
 
     @Override
-    public ResponseEntity<UserDTO> getUser(String id) {
+    public ResponseEntity<UserDTO> getUser(UUID id) {
         final var user = userService.getUser(id);
         return ResponseEntity.ok(user);
+    }
+
+    @Override
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        var users = userService.getUsers();
+        return ResponseEntity.ok(users);
     }
 
     @Override
@@ -52,11 +61,12 @@ public class UserRestControllerImpl implements UserRestController {
     }
 
     @Override
-    public ResponseEntity<byte[]> getPhoto(UUID userId) {
+    public ResponseEntity<Resource> getPhoto(UUID userId) {
         var userPhoto = userPhotoService.getPhoto(userId);
+        var content = userPhoto.getPhoto();
+        Assert.notNull(content, "Photo content is null");
         return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + userPhoto.getFileName())
-                .body(userPhoto.getPhoto());
+                .body(new ByteArrayResource(content));
     }
 }
