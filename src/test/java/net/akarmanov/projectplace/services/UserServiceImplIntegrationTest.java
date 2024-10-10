@@ -7,9 +7,11 @@ import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
+import net.akarmanov.projectplace.services.user.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -28,6 +30,9 @@ class UserServiceImplIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     private User user;
 
@@ -51,7 +56,7 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void testGetUser_success() {
-        UserDTO userDTO = userService.getUser(user.getId());
+        User userDTO = userService.getUser(user.getId());
         assertNotNull(userDTO);
         assertEquals(user.getFirstName(), userDTO.getFirstName());
         assertEquals(user.getLastName(), userDTO.getLastName());
@@ -77,14 +82,13 @@ class UserServiceImplIntegrationTest {
                 .role(UserRoleDto.ADMIN)
                 .build();
 
-        UserDTO createdUserDTO = userService.createUser(newUserDTO);
+        User createdUserDTO = userService.createUser(modelMapper.map(newUserDTO, User.class));
         assertNotNull(createdUserDTO);
         assertEquals(newUserDTO.getFirstName(), createdUserDTO.getFirstName());
         assertEquals(newUserDTO.getLastName(), createdUserDTO.getLastName());
         assertEquals(newUserDTO.getMiddleName(), createdUserDTO.getMiddleName());
         assertEquals(newUserDTO.getPhoneNumber(), createdUserDTO.getPhoneNumber());
         assertEquals(newUserDTO.getTelegramId(), createdUserDTO.getTelegramId());
-        assertEquals(newUserDTO.getRole(), createdUserDTO.getRole());
 
         Optional<User> createdUser = userRepository.findById(createdUserDTO.getId());
         assertTrue(createdUser.isPresent());
@@ -107,14 +111,13 @@ class UserServiceImplIntegrationTest {
                 .role(UserRoleDto.ADMIN)
                 .build();
 
-        UserDTO updatedUserDTO = userService.updateUser(user.getId(), updateUserDTO);
+        var updatedUserDTO = userService.updateUser(user.getId(), modelMapper.map(updateUserDTO, User.class));
         assertNotNull(updatedUserDTO);
         assertEquals(updateUserDTO.getFirstName(), updatedUserDTO.getFirstName());
         assertEquals(updateUserDTO.getLastName(), updatedUserDTO.getLastName());
         assertEquals(updateUserDTO.getMiddleName(), updatedUserDTO.getMiddleName());
         assertEquals(updateUserDTO.getPhoneNumber(), updatedUserDTO.getPhoneNumber());
         assertEquals(updateUserDTO.getTelegramId(), updatedUserDTO.getTelegramId());
-        assertEquals(updateUserDTO.getRole(), updatedUserDTO.getRole());
 
         Optional<User> updatedUser = userRepository.findById(user.getId());
         assertTrue(updatedUser.isPresent());

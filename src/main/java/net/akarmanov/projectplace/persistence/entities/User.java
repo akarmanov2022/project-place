@@ -8,6 +8,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import net.akarmanov.projectplace.models.UserRole;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -15,11 +21,21 @@ import net.akarmanov.projectplace.models.UserRole;
 @SuperBuilder
 @Table(name = "users")
 @NoArgsConstructor
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements UserDetails {
+
+    @NotNull
+    @Size(max = 55)
+    @Column(name = "username", nullable = false, unique = true)
+    private String username;
+
+    @NotNull
+    @Size(max = 255)
+    @Column(name = "password", nullable = false, unique = true)
+    private String password;
 
     @Size(max = 255)
     @NotNull
-    @Column(name = "first_name", nullable = false)
+    @Column(name = "first_name")
     private String firstName;
 
     @Size(max = 255)
@@ -31,11 +47,11 @@ public class User extends AbstractEntity {
     private String middleName;
 
     @Size(max = 32)
-    @Column(name = "phone_number", length = 32)
+    @Column(name = "phone_number", length = 32, nullable = false, unique = true)
     private String phoneNumber;
 
     @Size(max = 32)
-    @Column(name = "telegram_id", length = 32)
+    @Column(name = "telegram_id", length = 32, nullable = false, unique = true)
     private String telegramId;
 
     @NotNull
@@ -46,4 +62,8 @@ public class User extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
     private UserPhoto photo;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.toString()));
+    }
 }

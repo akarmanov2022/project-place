@@ -3,11 +3,15 @@ spring:
     name: project-place-backend
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: project-place
-    username: project-place
+    password: ${DB_PASSWORD:project-place}
+    username: ${DB_USERNAME:project-place}
     url: jdbc:postgresql://localhost:5432/project-place
   jpa:
     database: postgresql
     show-sql: true
     hibernate:
       ddl-auto: update
+
+
+jwt:
+  secret: ${JWT_SECRET:secret}

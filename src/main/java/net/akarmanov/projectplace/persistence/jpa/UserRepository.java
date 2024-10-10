@@ -8,4 +8,10 @@ import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByTelegramId(String telegramId);
+
+    boolean existsUserByUsername(String username);
+
+    boolean existsUserByTelegramId(String telegramId);
+
+    Optional<User> findByUsername(String username);
 }

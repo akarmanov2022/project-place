@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.services;
+package net.akarmanov.projectplace.services.user;
 
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.entities.UserPhoto;

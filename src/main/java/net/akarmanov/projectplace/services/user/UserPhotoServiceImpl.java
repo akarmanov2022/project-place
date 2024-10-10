@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.services;
+package net.akarmanov.projectplace.services.user;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
