@@ -103,10 +103,10 @@ public class BaseControllerAdvice {
     }
 
     @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler({BadCredentialsException.class})
     public ResponseEntity<ExceptionResponseModel> userExistsHandler(BadCredentialsException ex) {
-        log.error("Resource already exists", ex);
+        log.error("Bad credentials", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
