@@ -38,7 +38,7 @@ class UserServiceImplIntegrationTest {
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setMiddleName("Middle");
-        user.setPhoneNumber("123456789");
+        user.setPhoneNumber("+71234567890");
         user.setTelegramId("telegramId");
         user.setRole(UserRole.ADMIN);
         user = userRepository.save(user);
@@ -72,8 +72,10 @@ class UserServiceImplIntegrationTest {
                 .firstName("Jane")
                 .lastName("Doe")
                 .middleName("Middle")
-                .phoneNumber("987654321")
+                .phoneNumber("+79876543210")
                 .telegramId("newTelegramId")
+                .username("newUsername")
+                .password("newPassword")
                 .role(UserRole.ADMIN)
                 .build();
 
@@ -101,8 +103,10 @@ class UserServiceImplIntegrationTest {
                 .firstName("John")
                 .lastName("Smith")
                 .middleName("Middle")
-                .phoneNumber("123456789")
-                .telegramId("updatedTelegramId")
+                .phoneNumber("+79876543210")
+                .telegramId("newTelegramId")
+                .username("newUsername")
+                .password("newPassword")
                 .role(UserRole.ADMIN)
                 .build();
 
