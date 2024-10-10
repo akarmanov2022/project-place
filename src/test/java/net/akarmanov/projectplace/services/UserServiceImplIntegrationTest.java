@@ -1,8 +1,5 @@
 package net.akarmanov.projectplace.services;
 
-import net.akarmanov.projectplace.api.user.UserRoleDto;
-import net.akarmanov.projectplace.api.user.dto.UserCreateRequest;
-import net.akarmanov.projectplace.api.user.dto.UserDTO;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
@@ -11,7 +8,6 @@ import net.akarmanov.projectplace.services.user.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -30,9 +26,6 @@ class UserServiceImplIntegrationTest {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     private User user;
 
@@ -75,60 +68,60 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void testCreateUser() {
-        var newUserDTO = UserCreateRequest.builder()
+        var userServiceUser = User.builder()
                 .firstName("Jane")
                 .lastName("Doe")
                 .middleName("Middle")
                 .phoneNumber("987654321")
                 .telegramId("newTelegramId")
-                .role(UserRoleDto.ADMIN)
+                .role(UserRole.ADMIN)
                 .build();
 
-        User createdUserDTO = userService.createUser(modelMapper.map(newUserDTO, User.class));
+        User createdUserDTO = userService.createUser(userServiceUser);
         assertNotNull(createdUserDTO);
-        assertEquals(newUserDTO.getFirstName(), createdUserDTO.getFirstName());
-        assertEquals(newUserDTO.getLastName(), createdUserDTO.getLastName());
-        assertEquals(newUserDTO.getMiddleName(), createdUserDTO.getMiddleName());
-        assertEquals(newUserDTO.getPhoneNumber(), createdUserDTO.getPhoneNumber());
-        assertEquals(newUserDTO.getTelegramId(), createdUserDTO.getTelegramId());
+        assertEquals(userServiceUser.getFirstName(), createdUserDTO.getFirstName());
+        assertEquals(userServiceUser.getLastName(), createdUserDTO.getLastName());
+        assertEquals(userServiceUser.getMiddleName(), createdUserDTO.getMiddleName());
+        assertEquals(userServiceUser.getPhoneNumber(), createdUserDTO.getPhoneNumber());
+        assertEquals(userServiceUser.getTelegramId(), createdUserDTO.getTelegramId());
 
         Optional<User> createdUser = userRepository.findById(createdUserDTO.getId());
         assertTrue(createdUser.isPresent());
-        assertEquals(newUserDTO.getFirstName(), createdUser.get().getFirstName());
-        assertEquals(newUserDTO.getLastName(), createdUser.get().getLastName());
-        assertEquals(newUserDTO.getMiddleName(), createdUser.get().getMiddleName());
-        assertEquals(newUserDTO.getPhoneNumber(), createdUser.get().getPhoneNumber());
-        assertEquals(newUserDTO.getTelegramId(), createdUser.get().getTelegramId());
-        assertEquals(newUserDTO.getRole().toString(), createdUser.get().getRole().toString());
+        assertEquals(userServiceUser.getFirstName(), createdUser.get().getFirstName());
+        assertEquals(userServiceUser.getLastName(), createdUser.get().getLastName());
+        assertEquals(userServiceUser.getMiddleName(), createdUser.get().getMiddleName());
+        assertEquals(userServiceUser.getPhoneNumber(), createdUser.get().getPhoneNumber());
+        assertEquals(userServiceUser.getTelegramId(), createdUser.get().getTelegramId());
+        assertEquals(userServiceUser.getRole().toString(), createdUser.get().getRole().toString());
     }
 
     @Test
     void testUpdateUser() {
-        UserDTO updateUserDTO = UserDTO.builder()
+        User updateUser = User.builder()
                 .firstName("John")
                 .lastName("Smith")
                 .middleName("Middle")
                 .phoneNumber("123456789")
                 .telegramId("updatedTelegramId")
-                .role(UserRoleDto.ADMIN)
+                .role(UserRole.ADMIN)
                 .build();
 
-        var updatedUserDTO = userService.updateUser(user.getId(), modelMapper.map(updateUserDTO, User.class));
+        var updatedUserDTO = userService.updateUser(user.getId(), updateUser);
         assertNotNull(updatedUserDTO);
-        assertEquals(updateUserDTO.getFirstName(), updatedUserDTO.getFirstName());
-        assertEquals(updateUserDTO.getLastName(), updatedUserDTO.getLastName());
-        assertEquals(updateUserDTO.getMiddleName(), updatedUserDTO.getMiddleName());
-        assertEquals(updateUserDTO.getPhoneNumber(), updatedUserDTO.getPhoneNumber());
-        assertEquals(updateUserDTO.getTelegramId(), updatedUserDTO.getTelegramId());
+        assertEquals(updateUser.getFirstName(), updatedUserDTO.getFirstName());
+        assertEquals(updateUser.getLastName(), updatedUserDTO.getLastName());
+        assertEquals(updateUser.getMiddleName(), updatedUserDTO.getMiddleName());
+        assertEquals(updateUser.getPhoneNumber(), updatedUserDTO.getPhoneNumber());
+        assertEquals(updateUser.getTelegramId(), updatedUserDTO.getTelegramId());
 
         Optional<User> updatedUser = userRepository.findById(user.getId());
         assertTrue(updatedUser.isPresent());
-        assertEquals(updateUserDTO.getFirstName(), updatedUser.get().getFirstName());
-        assertEquals(updateUserDTO.getLastName(), updatedUser.get().getLastName());
-        assertEquals(updateUserDTO.getMiddleName(), updatedUser.get().getMiddleName());
-        assertEquals(updateUserDTO.getPhoneNumber(), updatedUser.get().getPhoneNumber());
-        assertEquals(updateUserDTO.getTelegramId(), updatedUser.get().getTelegramId());
-        assertEquals(updateUserDTO.getRole().toString(), updatedUser.get().getRole().toString());
+        assertEquals(updateUser.getFirstName(), updatedUser.get().getFirstName());
+        assertEquals(updateUser.getLastName(), updatedUser.get().getLastName());
+        assertEquals(updateUser.getMiddleName(), updatedUser.get().getMiddleName());
+        assertEquals(updateUser.getPhoneNumber(), updatedUser.get().getPhoneNumber());
+        assertEquals(updateUser.getTelegramId(), updatedUser.get().getTelegramId());
+        assertEquals(updateUser.getRole().toString(), updatedUser.get().getRole().toString());
     }
 
     @Test
