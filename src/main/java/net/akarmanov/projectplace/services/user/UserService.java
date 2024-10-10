@@ -1,7 +1,7 @@
 package net.akarmanov.projectplace.services.user;
 
 import net.akarmanov.projectplace.persistence.entities.User;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,9 +19,11 @@ public interface UserService {
 
     void deleteUser(String id);
 
-    void addPhoto(UUID userId, MultipartFile file);
-
     List<User> getUsers();
 
     User getCurrentUser();
+
+    UserDetailsService getDetailsService();
+
+    boolean existsByUsername(String username);
 }

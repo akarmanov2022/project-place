@@ -1,5 +1,6 @@
 package net.akarmanov.projectplace.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -29,7 +30,9 @@ public class UserPhoto extends AbstractEntity {
     private String fileName;
 
     @NotNull
+    @JsonIgnore
     @Lob
+    @Basic(fetch = FetchType.LAZY)
     @Column(name = "photo", nullable = false)
     private byte[] photo;
 

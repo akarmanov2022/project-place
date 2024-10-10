@@ -27,10 +27,12 @@ databaseChangeLog:
                   type: VARCHAR(55)
                   constraints:
                     nullable: false
+                    unique: true
               - column:
                   name: password
                   type: VARCHAR(255)
                   constraints:
+                    unique: true
                     nullable: false
               - column:
                   name: last_name
@@ -371,6 +373,7 @@ databaseChangeLog:
                   name: user_id
                   type: UUID
                   constraints:
+                    primaryKey: true
                     nullable: false
               - column:
                   name: file_name
@@ -388,3 +391,21 @@ databaseChangeLog:
             referencedTableName: users
             referencedColumnNames: id
             constraintName: fk_user_photos_user
+  - changeSet:
+      id: project-place-10
+      author: akarmanov
+      preConditions:
+        - not:
+            - columnExists:
+                tableName: users
+                columnName: enabled
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: enabled
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false

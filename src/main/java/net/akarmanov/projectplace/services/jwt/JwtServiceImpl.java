@@ -19,7 +19,7 @@ import java.util.function.Function;
  * Реализация сервиса для работы с JWT.
  */
 @Service
-public class JwtServiceImpl implements JwtService {
+class JwtServiceImpl implements JwtService {
 
     @Value("${jwt.secret}")
     private String jwtSecret;

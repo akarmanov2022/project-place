@@ -1,7 +1,7 @@
 package net.akarmanov.projectplace.services;
 
 import net.akarmanov.projectplace.api.user.UserRoleDto;
-import net.akarmanov.projectplace.api.user.dto.UserCreateDTO;
+import net.akarmanov.projectplace.api.user.dto.UserCreateRequest;
 import net.akarmanov.projectplace.api.user.dto.UserDTO;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
@@ -40,6 +40,8 @@ class UserServiceImplIntegrationTest {
     void setUp() {
         userRepository.deleteAll();
         user = new User();
+        user.setUsername("username");
+        user.setPassword("password");
         user.setFirstName("John");
         user.setLastName("Doe");
         user.setMiddleName("Middle");
@@ -73,7 +75,7 @@ class UserServiceImplIntegrationTest {
 
     @Test
     void testCreateUser() {
-        var newUserDTO = UserCreateDTO.builder()
+        var newUserDTO = UserCreateRequest.builder()
                 .firstName("Jane")
                 .lastName("Doe")
                 .middleName("Middle")

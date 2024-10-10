@@ -10,4 +10,8 @@ public enum UserRole {
     public String toString() {
         return name().toUpperCase();
     }
+
+    public String toRoleName() {
+        return "ROLE_" + name().toUpperCase();
+    }
 }

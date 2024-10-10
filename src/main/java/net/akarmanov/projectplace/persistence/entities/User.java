@@ -59,11 +59,16 @@ public class User extends AbstractEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
-    private UserPhoto photo;
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.toString()));
+        return List.of(new SimpleGrantedAuthority("ROLE_" + role));
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 }

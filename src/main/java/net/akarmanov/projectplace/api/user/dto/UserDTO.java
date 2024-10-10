@@ -26,8 +26,7 @@ public class UserDTO {
     private String phoneNumber;
     @NotBlank
     private String telegramId;
-    private UserPhotoDto photo;
     @NotNull
-    private UserRoleDto role = UserRoleDto.TRACKER;
+    private UserRoleDto role;
 
 }

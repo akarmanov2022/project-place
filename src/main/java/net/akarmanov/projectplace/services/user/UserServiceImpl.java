@@ -2,22 +2,22 @@ package net.akarmanov.projectplace.services.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
 import net.akarmanov.projectplace.services.exceptions.UserExistsException;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(username));
+                .orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Override
@@ -72,15 +72,6 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(UUID.fromString(id));
     }
 
-    @SneakyThrows
-    @Override
-    @Transactional
-    public void addPhoto(UUID userId, MultipartFile file) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(userId));
-        userPhotoService.addPhoto(user, file);
-    }
-
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -90,5 +81,15 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         var username = SecurityContextHolder.getContext().getAuthentication().getName();
         return getUserByUsername(username);
+    }
+
+    @Override
+    public UserDetailsService getDetailsService() {
+        return this::getUserByUsername;
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsUserByUsername(username);
     }
 }

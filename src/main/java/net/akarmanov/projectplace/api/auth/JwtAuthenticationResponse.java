@@ -2,11 +2,9 @@ package net.akarmanov.projectplace.api.auth;
 
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 @Schema(description = "Ответ на аутентификацию.")
 public class JwtAuthenticationResponse {
     @Schema(description = "Токен.")
@@ -14,4 +12,8 @@ public class JwtAuthenticationResponse {
 
     @Schema(description = "Тип токена.")
     private String tokenType = "Bearer";
+
+    public JwtAuthenticationResponse(String accessToken) {
+        this.accessToken = accessToken;
+    }
 }

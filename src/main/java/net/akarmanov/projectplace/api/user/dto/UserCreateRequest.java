@@ -12,7 +12,7 @@ import net.akarmanov.projectplace.api.user.UserRoleDto;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserCreateDTO {
+public class UserCreateRequest {
     @NotBlank
     private String firstName;
     @NotBlank

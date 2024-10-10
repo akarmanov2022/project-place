@@ -11,7 +11,14 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-
+    properties:
+      hibernate:
+        format_sql: true
 
 jwt:
-  secret: ${JWT_SECRET:secret}
+  secret: ${JWT_SECRET:8448660aa6fa3a070f7a2008874ecda08642b5bb3fcdcb0de3b80da6596eaa5eb966c8dd4c0338d5c0662b9db0ff7f69d1aa3aa0091dcee96cc5e01416ca8351}
+
+app:
+  superadmin:
+    username: ${ADMIN_USERNAME:superadmin}
+    password: ${ADMIN_PASSWORD:superadmin}
