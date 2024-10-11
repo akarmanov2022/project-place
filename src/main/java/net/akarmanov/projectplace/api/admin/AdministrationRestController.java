@@ -34,7 +34,7 @@ public interface AdministrationRestController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Void> unconfirm(@RequestParam UUID userId);
 
-    @GetMapping(value = "/all", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/users/all", produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Page<UserDTO>> all(@ParameterObject @PageableDefault Pageable pageable);
 
