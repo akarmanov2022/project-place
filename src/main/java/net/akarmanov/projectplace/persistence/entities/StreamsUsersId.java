@@ -15,7 +15,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Embeddable
-public class StreamsTrackerId implements Serializable {
+public class StreamsUsersId implements Serializable {
     @Serial
     private static final long serialVersionUID = 1548464870812443378L;
 
@@ -24,21 +24,21 @@ public class StreamsTrackerId implements Serializable {
     private UUID streamId;
 
     @NotNull
-    @Column(name = "tracker_id", nullable = false, length = 32)
-    private UUID trackerId;
+    @Column(name = "user_id", nullable = false, length = 32)
+    private UUID userId;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        StreamsTrackerId entity = (StreamsTrackerId) o;
+        StreamsUsersId entity = (StreamsUsersId) o;
         return Objects.equals(this.streamId, entity.streamId) &&
-                Objects.equals(this.trackerId, entity.trackerId);
+                Objects.equals(this.userId, entity.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(streamId, trackerId);
+        return Objects.hash(streamId, userId);
     }
 
 }

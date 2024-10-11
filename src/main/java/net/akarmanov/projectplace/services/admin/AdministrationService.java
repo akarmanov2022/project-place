@@ -1,15 +1,15 @@
 package net.akarmanov.projectplace.services.admin;
 
-import net.akarmanov.projectplace.persistence.entities.Tracker;
+import net.akarmanov.projectplace.persistence.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;
 
 public interface AdministrationService {
-    void confirmTracker(UUID userId);
+    void confirmUser(UUID userId);
 
-    void unconfirmTracker(UUID userId);
+    void unconfirmUser(UUID userId);
 
-    Page<Tracker> getAllTrackers(Pageable pageable);
+    Page<User> getAllUsers(Pageable pageable);
 }

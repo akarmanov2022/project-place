@@ -1,8 +1,8 @@
 package net.akarmanov.projectplace.services.admin;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.persistence.entities.Tracker;
-import net.akarmanov.projectplace.services.user.TrackerService;
+import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -13,20 +13,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class AdministrationServiceImpl implements AdministrationService {
 
-    private final TrackerService trackerService;
+    private final UserService userService;
 
     @Override
-    public void confirmTracker(UUID userId) {
-        trackerService.confirmTracker(userId);
+    public void confirmUser(UUID userId) {
+        userService.enableUser(userId);
     }
 
     @Override
-    public void unconfirmTracker(UUID userId) {
-        trackerService.unconfirmTracker(userId);
+    public void unconfirmUser(UUID userId) {
+        userService.disableUser(userId);
     }
 
     @Override
-    public Page<Tracker> getAllTrackers(Pageable pageable) {
-        return trackerService.findAll(pageable);
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userService.findAll(pageable);
     }
 }

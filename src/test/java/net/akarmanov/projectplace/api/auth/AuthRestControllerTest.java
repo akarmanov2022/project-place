@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -27,6 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
+@TestPropertySource(
+        properties = {
+                "JWT_SECRET=12345678905675675674564564566756756756745645656"
+        })
 class AuthRestControllerTest {
 
     public static final String USERNAME = "username";
@@ -51,10 +56,9 @@ class AuthRestControllerTest {
     @BeforeEach
     void setUp() {
         userRepository.save(User.builder()
-                .username(USERNAME)
                 .password(passwordEncoder.encode(PASSWORD))
                 .phoneNumber("+71234567890")
-                .telegramId("telegramId")
+                .telegramId(USERNAME)
                 .firstName("John")
                 .enabled(true)
                 .role(UserRole.ADMIN)
@@ -72,7 +76,7 @@ class AuthRestControllerTest {
                 .username(USERNAME)
                 .password(PASSWORD)
                 .build();
-        mockMvc.perform(post("/auth/sing-in")
+        mockMvc.perform(post("/api/v1/auth/sing-in")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signIn)))
                 .andDo(print())
@@ -86,11 +90,11 @@ class AuthRestControllerTest {
                 .username(USERNAME)
                 .password("wrongPassword")
                 .build();
-        mockMvc.perform(post("/auth/sing-in")
+        mockMvc.perform(post("/api/v1/auth/sing-in")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signIn)))
                 .andDo(print())
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isUnauthorized());
     }
 
     @Test
@@ -103,7 +107,7 @@ class AuthRestControllerTest {
                 .firstName("John")
                 .role(UserRoleDto.ADMIN)
                 .build();
-        mockMvc.perform(post("/auth/sing-up")
+        mockMvc.perform(post("/api/v1/auth/sing-up")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signUp)))
                 .andDo(print())
@@ -117,11 +121,9 @@ class AuthRestControllerTest {
                 .username(USERNAME)
                 .password(PASSWORD)
                 .phoneNumber("+71234567892")
-                .telegramId("telegramId")
-                .firstName("John")
                 .role(UserRoleDto.ADMIN)
                 .build();
-        mockMvc.perform(post("/auth/sing-up")
+        mockMvc.perform(post("/api/v1/auth/sing-up")
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signUp)))
                 .andDo(print())

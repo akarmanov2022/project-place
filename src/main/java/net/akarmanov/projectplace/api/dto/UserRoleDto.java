@@ -3,7 +3,7 @@ package net.akarmanov.projectplace.api.dto;
 public enum UserRoleDto {
     ADMIN,
     TRACKER,
-    SUPERADMIN;
+    SUPER_ADMIN;
 
     @Override
     public String toString() {

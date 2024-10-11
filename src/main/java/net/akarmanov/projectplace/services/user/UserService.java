@@ -1,9 +1,10 @@
 package net.akarmanov.projectplace.services.user;
 
 import net.akarmanov.projectplace.persistence.entities.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
@@ -11,19 +12,21 @@ public interface UserService {
 
     User getUserByTelegramId(String telegramId);
 
-    User getUserByUsername(String username);
-
     User createUser(User userCreateDTO);
 
     User updateUser(UUID id, User userDTO);
 
     void deleteUser(String id);
 
-    List<User> getUsers();
-
     User getCurrentUser();
 
     UserDetailsService getDetailsService();
 
     boolean existsByUsername(String username);
+
+    Page<User> findAll(Pageable pageable);
+
+    void enableUser(UUID userId);
+
+    void disableUser(UUID userId);
 }

@@ -2,7 +2,7 @@ package net.akarmanov.projectplace.api.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.akarmanov.projectplace.api.dto.TrackerDTO;
+import net.akarmanov.projectplace.api.dto.UserDTO;
 import net.akarmanov.projectplace.services.admin.AdministrationService;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -15,7 +15,7 @@ import java.util.UUID;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-public class AdminTrackerRestControllerImpl implements AdminTrackerRestController {
+public class AdminTrackerRestControllerImpl implements AdministrationRestController {
 
     private final ModelMapper modelMapper;
 
@@ -23,20 +23,20 @@ public class AdminTrackerRestControllerImpl implements AdminTrackerRestControlle
 
     @Override
     public ResponseEntity<Void> confirm(UUID userId) {
-        administrationService.confirmTracker(userId);
+        administrationService.confirmUser(userId);
         return ResponseEntity.ok().build();
     }
 
     @Override
     public ResponseEntity<Void> unconfirm(UUID userId) {
-        administrationService.unconfirmTracker(userId);
+        administrationService.unconfirmUser(userId);
         return ResponseEntity.ok().build();
     }
 
     @Override
-    public ResponseEntity<Page<TrackerDTO>> all(Pageable pageable) {
-        var trackers = administrationService.getAllTrackers(pageable);
-        var trackerDTOs = trackers.map(tracker -> modelMapper.map(tracker, TrackerDTO.class));
+    public ResponseEntity<Page<UserDTO>> all(Pageable pageable) {
+        var trackers = administrationService.getAllUsers(pageable);
+        var trackerDTOs = trackers.map(tracker -> modelMapper.map(tracker, UserDTO.class));
         return ResponseEntity.ok(trackerDTOs);
     }
 }

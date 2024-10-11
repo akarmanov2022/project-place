@@ -2,7 +2,7 @@ package net.akarmanov.projectplace.api.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import net.akarmanov.projectplace.api.dto.TrackerDTO;
+import net.akarmanov.projectplace.api.dto.UserDTO;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,24 +18,24 @@ import java.util.UUID;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@Tag(name = "Tracker API")
+@Tag(name = "Administration API")
 @RequestMapping(
-        value = "/api/v1/admin/tracker",
+        value = "/api/v1/admin",
         produces = APPLICATION_JSON_VALUE)
-public interface AdminTrackerRestController {
+public interface AdministrationRestController {
 
     @PostMapping("/confirm")
-    @Operation(summary = "Подтверждение трекера.")
+    @Operation(summary = "Подтверждение пользователя.")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Void> confirm(@RequestParam UUID userId);
 
     @PostMapping("/unconfirm")
-    @Operation(summary = "Отмена подтверждения трекера.")
+    @Operation(summary = "Отмена подтверждения пользователя.")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Void> unconfirm(@RequestParam UUID userId);
 
     @GetMapping(value = "/all", produces = APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseEntity<Page<TrackerDTO>> all(@ParameterObject @PageableDefault Pageable pageable);
+    ResponseEntity<Page<UserDTO>> all(@ParameterObject @PageableDefault Pageable pageable);
 
 }

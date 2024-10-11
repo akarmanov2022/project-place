@@ -24,12 +24,9 @@ public class SuperAdminSetupConfigurer {
     public void setupSuperAdmin() {
         if (!userService.existsByUsername(superAdminUsername)) {
             var superAdmin = User.builder()
-                    .username(superAdminUsername)
-                    .firstName("Super")
-                    .telegramId("superAdminUsername")
+                    .telegramId(superAdminUsername)
                     .password(passwordEncoder.encode(superAdminPassword))
                     .role(UserRole.SUPER_ADMIN)
-                    .phoneNumber("+70000000000")
                     .enabled(true)
                     .build();
             userService.createUser(superAdmin);

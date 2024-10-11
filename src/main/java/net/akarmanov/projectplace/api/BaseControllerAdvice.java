@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -97,9 +98,18 @@ public class BaseControllerAdvice {
     @ExceptionHandler({AccessDeniedException.class})
     public ResponseEntity<ExceptionResponseModel> accessDeniedHandler(Exception ex) {
         log.error("Access denied", ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({DisabledException.class})
+    public ResponseEntity<ExceptionResponseModel> disabledDeniedHandler(DisabledException ex) {
+        log.error("Disabled exception", ex);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponseModel.builder().message("Пользователь не подтвержден").build());
     }
 
     @ResponseBody
@@ -107,7 +117,7 @@ public class BaseControllerAdvice {
     @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<ExceptionResponseModel> handleAuthenticationException(Exception ex) {
         log.error("Authentication error", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
     }

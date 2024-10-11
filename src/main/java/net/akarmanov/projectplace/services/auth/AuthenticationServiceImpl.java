@@ -27,7 +27,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse singUp(SingUpRequest singUpRequest) {
         var user = User.builder()
-                .username(singUpRequest.getUsername())
                 .firstName(singUpRequest.getFirstName())
                 .lastName(singUpRequest.getLastName())
                 .middleName(singUpRequest.getMiddleName())
@@ -35,7 +34,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
                 .phoneNumber(singUpRequest.getPhoneNumber())
                 .role(UserRole.valueOf(singUpRequest.getRole().toString()))
                 .password(passwordEncoder.encode(singUpRequest.getPassword()))
-                .enabled(true)
                 .build();
 
         userService.createUser(user);

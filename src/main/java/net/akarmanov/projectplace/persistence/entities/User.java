@@ -24,17 +24,11 @@ import java.util.List;
 public class User extends AbstractEntity implements UserDetails {
 
     @NotNull
-    @Size(max = 55)
-    @Column(name = "username", nullable = false, unique = true)
-    private String username;
-
-    @NotNull
     @Size(max = 255)
     @Column(name = "password", nullable = false, unique = true)
     private String password;
 
     @Size(max = 255)
-    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
@@ -47,7 +41,7 @@ public class User extends AbstractEntity implements UserDetails {
     private String middleName;
 
     @Size(max = 32)
-    @Column(name = "phone_number", length = 32, nullable = false, unique = true)
+    @Column(name = "phone_number", length = 32, unique = true)
     private String phoneNumber;
 
     @Size(max = 32)
@@ -70,5 +64,10 @@ public class User extends AbstractEntity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    @Override
+    public String getUsername() {
+        return telegramId;
     }
 }

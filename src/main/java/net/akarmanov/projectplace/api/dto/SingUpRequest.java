@@ -12,10 +12,6 @@ import lombok.Data;
 @Builder
 @Schema(description = "Запрос на регистрацию.")
 public class SingUpRequest {
-    @Size(min = 4, max = 20, message = "Имя пользователя должно быть от 4 до 20 символов.")
-    @Schema(description = "Имя пользователя.")
-    @NotBlank(message = "Имя пользователя не может быть null.")
-    private String username;
 
     @Size(min = 6, max = 20, message = "Пароль должен быть от 6 до 20 символов.")
     @Schema(description = "Пароль.")
