@@ -1,5 +1,6 @@
 package net.akarmanov.projectplace.persistence.jpa;
 
+import jakarta.validation.constraints.Size;
 import net.akarmanov.projectplace.persistence.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -11,4 +12,8 @@ public interface UserRepository extends JpaRepository<User, UUID>, JpaSpecificat
     Optional<User> findByTelegramId(String telegramId);
 
     boolean existsUserByTelegramId(String telegramId);
+
+    boolean existsByTelegramIdOrPhoneNumber(@Size(max = 32) String telegramId, @Size(max = 32) String phoneNumber);
+
+    boolean existsByPhoneNumber(@Size(max = 32) String phoneNumber);
 }

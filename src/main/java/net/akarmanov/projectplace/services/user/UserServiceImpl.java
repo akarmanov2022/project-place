@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
+import net.akarmanov.projectplace.services.exceptions.PhoneNumberExistsException;
 import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import org.springframework.data.domain.Page;
@@ -36,6 +37,9 @@ public class UserServiceImpl implements UserService {
     public User createUser(User userCreate) {
         if (userRepository.existsUserByTelegramId(userCreate.getTelegramId())) {
             throw new TelegramIdExistsException(userCreate.getTelegramId());
+        }
+        if (userRepository.existsByPhoneNumber(userCreate.getPhoneNumber())) {
+            throw new PhoneNumberExistsException(userCreate.getPhoneNumber());
         }
 
         return userRepository.save(userCreate);

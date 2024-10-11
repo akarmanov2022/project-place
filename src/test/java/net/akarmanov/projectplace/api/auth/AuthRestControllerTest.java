@@ -73,7 +73,7 @@ class AuthRestControllerTest {
     @Test
     void testSignIn_success() throws Exception {
         var signIn = SingInRequest.builder()
-                .username(USERNAME)
+                .telegramId(USERNAME)
                 .password(PASSWORD)
                 .build();
         mockMvc.perform(post("/api/v1/auth/sing-in")
@@ -87,7 +87,7 @@ class AuthRestControllerTest {
     @Test
     void testSignIn_failure() throws Exception {
         var signIn = SingInRequest.builder()
-                .username(USERNAME)
+                .telegramId(USERNAME)
                 .password("wrongPassword")
                 .build();
         mockMvc.perform(post("/api/v1/auth/sing-in")
@@ -100,7 +100,6 @@ class AuthRestControllerTest {
     @Test
     void testSignUp_success() throws Exception {
         var signUp = SingUpRequest.builder()
-                .username("newUsername")
                 .password("newPassword")
                 .phoneNumber("+71234567891")
                 .telegramId("newTelegramId")
@@ -118,7 +117,6 @@ class AuthRestControllerTest {
     @Test
     void testSignUp_failure() throws Exception {
         var signUp = SingUpRequest.builder()
-                .username(USERNAME)
                 .password(PASSWORD)
                 .phoneNumber("+71234567892")
                 .role(UserRoleDto.ADMIN)

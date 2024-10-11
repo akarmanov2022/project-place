@@ -42,7 +42,7 @@ databaseChangeLog:
                   type: VARCHAR(32)
                   constraints:
                     unique: true
-                    nullable: true
+                    nullable: false
               - column:
                   name: role
                   type: VARCHAR(32)
