@@ -1,4 +1,9 @@
 spring:
+  profiles:
+    active: prom
+---
+spring:
+  profiles: develop
   application:
     name: project-place-backend
   datasource:
@@ -14,6 +19,26 @@ spring:
     properties:
       hibernate:
         format_sql: true
+    open-in-view: false
+
+app:
+  superadmin:
+    username: ${ADMIN_USERNAME:superadmin}
+    password: ${ADMIN_PASSWORD:superadmin}
+---
+spring:
+  profiles: prom
+  application:
+    name: project-place-backend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: ${DB_PASSWORD:project-place}
+    username: ${DB_USERNAME:project-place}
+    url: jdbc:postgresql://localhost:5432/project-place
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: update
     open-in-view: false
 
 app:
