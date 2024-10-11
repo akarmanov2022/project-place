@@ -14,8 +14,8 @@ public class TeamCard extends AbstractEntity {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tracker_id", nullable = false)
-    private Tracker tracker;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User tracker;
 
     @Size(max = 255)
     @NotNull

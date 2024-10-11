@@ -2,8 +2,8 @@ package net.akarmanov.projectplace.services.auth;
 
 import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.api.auth.JwtAuthenticationResponse;
-import net.akarmanov.projectplace.api.auth.SingInRequest;
-import net.akarmanov.projectplace.api.auth.SingUpRequest;
+import net.akarmanov.projectplace.api.dto.SingInRequest;
+import net.akarmanov.projectplace.api.dto.SingUpRequest;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.services.jwt.JwtService;
@@ -27,7 +27,6 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse singUp(SingUpRequest singUpRequest) {
         var user = User.builder()
-                .username(singUpRequest.getUsername())
                 .firstName(singUpRequest.getFirstName())
                 .lastName(singUpRequest.getLastName())
                 .middleName(singUpRequest.getMiddleName())
@@ -45,11 +44,11 @@ class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public JwtAuthenticationResponse singIn(SingInRequest request) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.getUsername(),
+                request.getTelegramId(),
                 request.getPassword())
         );
         var user = userService.getDetailsService()
-                .loadUserByUsername(request.getUsername());
+                .loadUserByUsername(request.getTelegramId());
 
         var token = jwtService.generateToken(user);
         return new JwtAuthenticationResponse(token);

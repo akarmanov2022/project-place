@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api.auth;
+package net.akarmanov.projectplace.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -7,16 +7,11 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import net.akarmanov.projectplace.api.user.UserRoleDto;
 
 @Data
 @Builder
 @Schema(description = "Запрос на регистрацию.")
 public class SingUpRequest {
-    @Size(min = 4, max = 20, message = "Имя пользователя должно быть от 4 до 20 символов.")
-    @Schema(description = "Имя пользователя.")
-    @NotBlank(message = "Имя пользователя не может быть null.")
-    private String username;
 
     @Size(min = 6, max = 20, message = "Пароль должен быть от 6 до 20 символов.")
     @Schema(description = "Пароль.")

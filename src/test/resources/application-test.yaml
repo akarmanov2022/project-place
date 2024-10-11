@@ -17,3 +17,8 @@ spring:
 
   liquibase:
     enabled: false
+
+app:
+  superadmin:
+    username: ${ADMIN_USERNAME:superadmin}
+    password: ${ADMIN_PASSWORD:superadmin}

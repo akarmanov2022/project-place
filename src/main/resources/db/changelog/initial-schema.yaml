@@ -20,14 +20,6 @@ databaseChangeLog:
               - column:
                   name: first_name
                   type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: username
-                  type: VARCHAR(55)
-                  constraints:
-                    nullable: false
-                    unique: true
               - column:
                   name: password
                   type: VARCHAR(255)
@@ -44,12 +36,13 @@ databaseChangeLog:
                   name: phone_number
                   type: VARCHAR(32)
                   constraints:
-                    nullable: true
+                    unique: true
               - column:
                   name: telegram_id
                   type: VARCHAR(32)
                   constraints:
-                    nullable: true
+                    unique: true
+                    nullable: false
               - column:
                   name: role
                   type: VARCHAR(32)
@@ -59,44 +52,6 @@ databaseChangeLog:
             columnNames: telegram_id, phone_number
             tableName: users
             constraintName: uq_users_telegram_phone
-  - changeSet:
-      id: project-place-2
-      author: Arseniy Karmanov
-      preConditions:
-        - not:
-            - tableExists:
-                tableName: trackers
-      changes:
-        - createTable:
-            tableName: trackers
-            columns:
-              - column:
-                  name: id
-                  type: UUID
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: user_id
-                  type: UUID
-                  constraints:
-                    nullable: false
-              - column:
-                  name: create_date
-                  type: DATETIME
-                  constraints:
-                    nullable: false
-              - column:
-                  name: status
-                  type: VARCHAR(32)
-                  constraints:
-                    nullable: false
-        - addForeignKeyConstraint:
-            baseTableName: trackers
-            baseColumnNames: user_id
-            referencedTableName: users
-            referencedColumnNames: id
-            constraintName: fk_tracker_user
   - changeSet:
       id: project-place-4
       author: Arseniy Karmanov
@@ -115,7 +70,7 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: tracker_id
+                  name: user_id
                   type: UUID
                   constraints:
                     nullable: false
@@ -136,10 +91,10 @@ databaseChangeLog:
                     nullable: false
         - addForeignKeyConstraint:
             baseTableName: team_cards
-            baseColumnNames: tracker_id
-            referencedTableName: trackers
+            baseColumnNames: user_id
+            referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_team_cards_tracker
+            constraintName: fk_team_cards_users
   - changeSet:
       id: project-place-6
       author: Arseniy Karmanov
@@ -321,10 +276,10 @@ databaseChangeLog:
       preConditions:
         - not:
             - tableExists:
-                tableName: streams_trackers
+                tableName: streams_users
       changes:
         - createTable:
-            tableName: streams_trackers
+            tableName: streams_users
             columns:
               - column:
                   name: stream_id
@@ -332,26 +287,26 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: tracker_id
+                  name: user_id
                   type: UUID
                   constraints:
                     nullable: false
         - addPrimaryKey:
-            columnNames: stream_id, tracker_id
-            tableName: streams_trackers
-            constraintName: pk_streams_trackers
+            columnNames: stream_id, user_id
+            tableName: streams_users
+            constraintName: pk_streams_users
         - addForeignKeyConstraint:
-            baseTableName: streams_trackers
+            baseTableName: streams_users
             baseColumnNames: stream_id
             referencedTableName: streams
             referencedColumnNames: id
-            constraintName: fk_streams_trackers_stream
+            constraintName: fk_streams_users_stream
         - addForeignKeyConstraint:
-            baseTableName: streams_trackers
-            baseColumnNames: tracker_id
-            referencedTableName: trackers
+            baseTableName: streams_users
+            baseColumnNames: user_id
+            referencedTableName: users
             referencedColumnNames: id
-            constraintName: fk_streams_trackers_tracker
+            constraintName: fk_streams_users_tracker
   - changeSet:
       id: project-place-8
       author: akarmanov
@@ -395,7 +350,8 @@ databaseChangeLog:
       id: project-place-10
       author: akarmanov
       preConditions:
-        - not:
+        - onFail: MARK_RAN
+          not:
             - columnExists:
                 tableName: users
                 columnName: enabled

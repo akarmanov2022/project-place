@@ -11,6 +11,7 @@ import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextHolderStrategy;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -31,6 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
 
+    private final SecurityContextHolderStrategy securityContextHolderStrategy = SecurityContextHolder.getContextHolderStrategy();
+
+
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -45,7 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             var userDetails = userService.getDetailsService().loadUserByUsername(username);
             if (jwtService.isTokenValid(token, userDetails)) {
-                var context = SecurityContextHolder.createEmptyContext();
+                var context = securityContextHolderStrategy.createEmptyContext();
                 var authentication = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,
@@ -53,7 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 context.setAuthentication(authentication);
-                SecurityContextHolder.setContext(context);
+                securityContextHolderStrategy.setContext(context);
             }
         }
         filterChain.doFilter(request, response);

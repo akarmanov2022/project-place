@@ -2,17 +2,16 @@ package net.akarmanov.projectplace.api;
 
 import lombok.extern.slf4j.Slf4j;
 import net.akarmanov.projectplace.models.ExceptionResponseModel;
-import net.akarmanov.projectplace.services.exceptions.PhotoNotFoundException;
-import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
-import net.akarmanov.projectplace.services.exceptions.UserExistsException;
-import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
+import net.akarmanov.projectplace.services.exceptions.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,21 +23,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class BaseControllerAdvice {
 
-
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({IllegalArgumentException.class})
-    public ResponseEntity<ExceptionResponseModel> badRequestHandler(Exception ex) {
-        log.error("Bad request", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
-    }
-
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({MethodArgumentNotValidException.class})
-    public ResponseEntity<ExceptionResponseModel> badRequestHandler(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ExceptionResponseModel> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.error("Bad request", ex);
         var errors = ex.getAllErrors();
 
@@ -54,8 +42,20 @@ public class BaseControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({ConstraintViolationException.class})
-    public ResponseEntity<ExceptionResponseModel> badRequestHandler(ConstraintViolationException ex) {
+    @ExceptionHandler(
+            {ConstraintViolationException.class, IllegalArgumentException.class})
+    public ResponseEntity<ExceptionResponseModel> badRequestHandler(Exception ex) {
+        log.error("Bad request", ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<ExceptionResponseModel> dataIntegrityViolationExceptionHandler(
+            DataIntegrityViolationException ex) {
         log.error("Bad request", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,7 +84,7 @@ public class BaseControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({UserExistsException.class, TelegramIdExistsException.class})
+    @ExceptionHandler({UserExistsException.class, TelegramIdExistsException.class, PhoneNumberExistsException.class})
     public ResponseEntity<ExceptionResponseModel> userExistsHandler(Exception ex) {
         log.error("Resource already exists", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -94,20 +94,29 @@ public class BaseControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({AuthorizationDeniedException.class})
-    public ResponseEntity<ExceptionResponseModel> accessDeniedHandler(AuthorizationDeniedException ex) {
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ExceptionResponseModel> accessDeniedHandler(Exception ex) {
         log.error("Access denied", ex);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
     }
 
     @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler({DisabledException.class})
+    public ResponseEntity<ExceptionResponseModel> disabledDeniedHandler(DisabledException ex) {
+        log.error("Disabled exception", ex);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ExceptionResponseModel.builder().message("Пользователь не подтвержден").build());
+    }
+
+    @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({BadCredentialsException.class})
-    public ResponseEntity<ExceptionResponseModel> userExistsHandler(BadCredentialsException ex) {
-        log.error("Bad credentials", ex);
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<ExceptionResponseModel> handleAuthenticationException(Exception ex) {
+        log.error("Authentication error", ex);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
     }

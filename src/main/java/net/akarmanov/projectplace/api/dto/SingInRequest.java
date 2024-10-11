@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api.auth;
+package net.akarmanov.projectplace.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -10,10 +10,10 @@ import lombok.Data;
 @Builder
 @Schema(description = "Запрос на аутентификацию.")
 public class SingInRequest {
-    @Schema(description = "Имя пользователя.")
-    @Size(min = 4, max = 20, message = "Имя пользователя должно быть от 4 до 20 символов.")
-    @NotBlank(message = "Имя пользователя не может быть null.")
-    private String username;
+    @Schema(description = "Telegram ID.")
+    @Size(min = 4, max = 20, message = "Telegram ID от 4 до 20 символов.")
+    @NotBlank(message = "Telegram ID не может быть null.")
+    private String telegramId;
 
     @Schema(description = "Пароль.")
     @Size(min = 6, max = 20, message = "Пароль должен быть от 6 до 20 символов.")
