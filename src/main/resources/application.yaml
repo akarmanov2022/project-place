@@ -3,7 +3,6 @@ spring:
     active: prom
 ---
 spring:
-  profiles: develop
   application:
     name: project-place-backend
   datasource:
@@ -20,6 +19,9 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: false
+  config:
+    activate:
+      on-profile: develop
 
 app:
   superadmin:
@@ -27,7 +29,6 @@ app:
     password: ${ADMIN_PASSWORD:superadmin}
 ---
 spring:
-  profiles: prom
   application:
     name: project-place-backend
   datasource:
@@ -40,6 +41,9 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  config:
+    activate:
+      on-profile: prom
 
 app:
   superadmin:
