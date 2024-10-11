@@ -60,7 +60,7 @@ public class User extends AbstractEntity implements UserDetails {
     private UserRole role;
 
     @Column(name = "enabled", nullable = false)
-    private boolean enabled = true;
+    private boolean enabled;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

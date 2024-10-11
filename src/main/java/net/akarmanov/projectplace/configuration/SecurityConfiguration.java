@@ -50,11 +50,11 @@ public class SecurityConfiguration {
                     return corsConfiguration;
                 }))
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/v1/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-resources/*", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/tracker/**").hasRole(TRACKER.toString())
-                        .requestMatchers("/admin/**").hasRole(ADMIN.toString())
-                        .requestMatchers("/super-admin/**").hasRole(SUPER_ADMIN.toString())
+                        .requestMatchers("/api/v1/tracker/**").hasRole(TRACKER.toString())
+                        .requestMatchers("/api/v1/admin/**").hasRole(ADMIN.toString())
+                        .requestMatchers("/api/v1/super-admin/**").hasRole(SUPER_ADMIN.toString())
                         .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())

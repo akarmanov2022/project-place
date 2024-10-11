@@ -395,7 +395,8 @@ databaseChangeLog:
       id: project-place-10
       author: akarmanov
       preConditions:
-        - not:
+        - onFail: MARK_RAN
+          not:
             - columnExists:
                 tableName: users
                 columnName: enabled
@@ -408,4 +409,4 @@ databaseChangeLog:
                   type: BOOLEAN
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true

@@ -17,3 +17,7 @@ spring:
 
   liquibase:
     enabled: false
+
+springdoc:
+  swagger-ui:
+    config-url: /swagger-ui.html

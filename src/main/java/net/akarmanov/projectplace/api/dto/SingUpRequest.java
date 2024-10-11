@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api.auth;
+package net.akarmanov.projectplace.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
-import net.akarmanov.projectplace.api.user.UserRoleDto;
 
 @Data
 @Builder

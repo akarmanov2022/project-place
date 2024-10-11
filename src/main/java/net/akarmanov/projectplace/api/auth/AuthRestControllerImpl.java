@@ -1,6 +1,8 @@
 package net.akarmanov.projectplace.api.auth;
 
 import lombok.RequiredArgsConstructor;
+import net.akarmanov.projectplace.api.dto.SingInRequest;
+import net.akarmanov.projectplace.api.dto.SingUpRequest;
 import net.akarmanov.projectplace.services.auth.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;

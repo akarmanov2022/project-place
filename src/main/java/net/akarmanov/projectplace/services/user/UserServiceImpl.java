@@ -2,6 +2,7 @@ package net.akarmanov.projectplace.services.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.persistence.jpa.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
@@ -21,7 +22,7 @@ class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    private final UserPhotoService userPhotoService;
+    private final TrackerService trackerService;
 
     @Override
     public User getUser(UUID id) {
@@ -49,7 +50,12 @@ class UserServiceImpl implements UserService {
         if (userRepository.existsUserByTelegramId(userCreate.getTelegramId())) {
             throw new TelegramIdExistsException(userCreate.getTelegramId());
         }
-        return userRepository.save(userCreate);
+
+        var user = userRepository.save(userCreate);
+        if (UserRole.TRACKER.equals(user.getRole())) {
+            trackerService.createTracker(user);
+        }
+        return user;
     }
 
     @Override

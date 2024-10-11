@@ -2,8 +2,8 @@ package net.akarmanov.projectplace.services.auth;
 
 import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.api.auth.JwtAuthenticationResponse;
-import net.akarmanov.projectplace.api.auth.SingInRequest;
-import net.akarmanov.projectplace.api.auth.SingUpRequest;
+import net.akarmanov.projectplace.api.dto.SingInRequest;
+import net.akarmanov.projectplace.api.dto.SingUpRequest;
 import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.persistence.entities.User;
 import net.akarmanov.projectplace.services.jwt.JwtService;
@@ -35,6 +35,7 @@ class AuthenticationServiceImpl implements AuthenticationService {
                 .phoneNumber(singUpRequest.getPhoneNumber())
                 .role(UserRole.valueOf(singUpRequest.getRole().toString()))
                 .password(passwordEncoder.encode(singUpRequest.getPassword()))
+                .enabled(true)
                 .build();
 
         userService.createUser(user);

@@ -2,10 +2,8 @@ package net.akarmanov.projectplace.services.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.persistence.entities.User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -19,10 +17,10 @@ import java.util.function.Function;
  * Реализация сервиса для работы с JWT.
  */
 @Service
+@RequiredArgsConstructor
 class JwtServiceImpl implements JwtService {
 
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private final SecretKey secretKey;
 
     @Override
     public String generateToken(UserDetails userDetails) {
@@ -57,7 +55,7 @@ class JwtServiceImpl implements JwtService {
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(getSecretKey(), Jwts.SIG.HS256)
+                .signWith(secretKey, Jwts.SIG.HS256)
                 .compact();
     }
 
@@ -81,20 +79,10 @@ class JwtServiceImpl implements JwtService {
      */
     private Claims extractAllClaims(String token) {
         var jwtParser = Jwts.parser()
-                .verifyWith(getSecretKey())
+                .verifyWith(secretKey)
                 .build();
         return jwtParser
                 .parseSignedClaims(token)
                 .getPayload();
-    }
-
-    /**
-     * Получает секретный ключ для работы с токенами.
-     *
-     * @return Секретный ключ.
-     */
-    private SecretKey getSecretKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(jwtSecret);
-        return Keys.hmacShaKeyFor(keyBytes);
     }
 }

@@ -1,4 +1,4 @@
-package net.akarmanov.projectplace.api.user;
+package net.akarmanov.projectplace.api.dto;
 
 public enum UserRoleDto {
     ADMIN,

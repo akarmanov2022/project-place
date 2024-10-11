@@ -2,15 +2,18 @@ package net.akarmanov.projectplace.persistence.entities;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 @Table(name = "trackers")
 public class Tracker extends AbstractEntity {
 
@@ -23,9 +26,9 @@ public class Tracker extends AbstractEntity {
     @Column(name = "create_date", nullable = false)
     private LocalDateTime createDate;
 
-    @Size(max = 32)
     @NotNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false, length = 32)
-    private String status;
+    private TrackerStatus status;
 
 }
