@@ -18,6 +18,7 @@ spring:
   liquibase:
     enabled: false
 
-springdoc:
-  swagger-ui:
-    config-url: /swagger-ui.html
+app:
+  superadmin:
+    username: ${ADMIN_USERNAME:superadmin}
+    password: ${ADMIN_PASSWORD:superadmin}
