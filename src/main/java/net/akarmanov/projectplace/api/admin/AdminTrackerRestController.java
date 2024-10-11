@@ -21,7 +21,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Tag(name = "Tracker API")
 @RequestMapping(
         value = "/api/v1/admin/tracker",
-        consumes = APPLICATION_JSON_VALUE,
         produces = APPLICATION_JSON_VALUE)
 public interface AdminTrackerRestController {
 
@@ -35,7 +34,8 @@ public interface AdminTrackerRestController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Void> unconfirm(@RequestParam UUID userId);
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseEntity<Page<TrackerDTO>> all(@ParameterObject @PageableDefault Pageable pageable);
 
 }

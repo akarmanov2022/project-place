@@ -11,8 +11,8 @@ import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -94,8 +94,8 @@ public class BaseControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ExceptionHandler({AuthorizationDeniedException.class})
-    public ResponseEntity<ExceptionResponseModel> accessDeniedHandler(AuthorizationDeniedException ex) {
+    @ExceptionHandler({AccessDeniedException.class})
+    public ResponseEntity<ExceptionResponseModel> accessDeniedHandler(Exception ex) {
         log.error("Access denied", ex);
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -104,9 +104,9 @@ public class BaseControllerAdvice {
 
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler({BadCredentialsException.class})
-    public ResponseEntity<ExceptionResponseModel> userExistsHandler(BadCredentialsException ex) {
-        log.error("Bad credentials", ex);
+    @ExceptionHandler({AuthenticationException.class})
+    public ResponseEntity<ExceptionResponseModel> handleAuthenticationException(Exception ex) {
+        log.error("Authentication error", ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(ExceptionResponseModel.builder().message(ex.getMessage()).build());
