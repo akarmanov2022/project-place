@@ -1,7 +1,8 @@
 package net.akarmanov.projectplace.services.admin;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.domain.User;
+import net.akarmanov.projectplace.mapping.UserMapper;
+import net.akarmanov.projectplace.rest.api.dto.UserDTO;
 import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,6 +13,8 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 class AdministrationServiceImpl implements AdministrationService {
+
+    public static final UserMapper USER_MAPPER = UserMapper.INSTANCE;
 
     private final UserService userService;
 
@@ -26,7 +29,8 @@ class AdministrationServiceImpl implements AdministrationService {
     }
 
     @Override
-    public Page<User> getAllUsers(Pageable pageable) {
-        return userService.findAll(pageable);
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+        var users = userService.findAll(pageable);
+        return users.map(USER_MAPPER::toDto);
     }
 }

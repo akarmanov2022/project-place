@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.domain.UserPhoto;
+import net.akarmanov.projectplace.mapping.UserPhotoMapper;
 import net.akarmanov.projectplace.repos.UserPhotoRepository;
 import net.akarmanov.projectplace.repos.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.PhotoNotFoundException;
@@ -17,14 +18,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class UserPhotoServiceImpl implements UserPhotoService {
 
+    public static final UserPhotoMapper USER_PHOTO_MAPPER = UserPhotoMapper.INSTANCE;
+
     private final UserPhotoRepository userPhotoRepository;
 
     private final UserRepository userRepository;
 
     @Override
-    public UserPhoto getPhoto(UUID photoId) {
-        return userPhotoRepository.findById(photoId)
+    public UserPhotoDto getPhoto(UUID photoId) {
+        var userPhoto = userPhotoRepository.findById(photoId)
                 .orElseThrow(() -> new PhotoNotFoundException(photoId));
+        return USER_PHOTO_MAPPER.toModel(userPhoto);
     }
 
     @SneakyThrows
@@ -48,9 +52,10 @@ class UserPhotoServiceImpl implements UserPhotoService {
 
     @Override
     @Transactional
-    public UserPhoto getPhotoByUserId(UUID userId) {
-        return userPhotoRepository.findByUserId(userId)
+    public UserPhotoDto getPhotoByUserId(UUID userId) {
+        var userPhoto = userPhotoRepository.findByUserId(userId)
                 .orElseThrow(() -> new PhotoNotFoundException(userId));
+        return USER_PHOTO_MAPPER.toModel(userPhoto);
     }
 
     @SneakyThrows

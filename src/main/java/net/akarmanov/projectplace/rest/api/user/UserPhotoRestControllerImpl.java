@@ -27,10 +27,10 @@ public class UserPhotoRestControllerImpl implements UserPhotoRestController {
     @Override
     public ResponseEntity<Resource> getPhoto(UUID userId) {
         var userPhoto = userPhotoService.getPhotoByUserId(userId);
-        var photo = userPhoto.getPhoto();
+        var photo = userPhoto.photo();
         return ResponseEntity.ok()
                 .contentLength(photo.length)
-                .header("Content-Disposition", "attachment; filename=" + userPhoto.getFileName())
+                .header("Content-Disposition", "attachment; filename=" + userPhoto.fileName())
                 .contentType(APPLICATION_OCTET_STREAM)
                 .body(new ByteArrayResource(photo));
     }

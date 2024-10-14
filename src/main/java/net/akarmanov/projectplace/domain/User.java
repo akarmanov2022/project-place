@@ -70,7 +70,7 @@ public class User implements UserDetails {
     private Set<Stream> streamsUserStreams;
 
     @OneToOne(mappedBy = "user")
-    private UserPhoto userUserPhotos;
+    private UserPhoto photo;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,29 +1,19 @@
 package net.akarmanov.projectplace.rest.api.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import net.akarmanov.projectplace.models.UserRole;
+import net.akarmanov.projectplace.services.user.UserPhotoDto;
 
 import java.util.UUID;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
-
-    private UUID id;
-
-    private String firstName;
-
-    private String lastName;
-
-    private String middleName;
-
-    private String phoneNumber;
-
-    private String telegramId;
-
-    private UserRoleDto role;
+public record UserDTO(
+        UUID id,
+        String firstName,
+        String lastName,
+        String middleName,
+        String phoneNumber,
+        String telegramId,
+        UserRole role,
+        UserPhotoDto photo) {
 }

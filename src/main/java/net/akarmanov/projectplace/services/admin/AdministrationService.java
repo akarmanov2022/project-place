@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services.admin;
 
-import net.akarmanov.projectplace.domain.User;
+import net.akarmanov.projectplace.rest.api.dto.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +11,5 @@ public interface AdministrationService {
 
     void unconfirmUser(UUID userId);
 
-    Page<User> getAllUsers(Pageable pageable);
+    Page<UserDTO> getAllUsers(Pageable pageable);
 }

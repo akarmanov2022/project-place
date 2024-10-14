@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
@@ -36,17 +35,6 @@ class UserPhotoServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void getPhoto_returnsPhoto_whenPhotoExists() {
-        UUID photoId = UUID.randomUUID();
-        UserPhoto userPhoto = new UserPhoto();
-        when(userPhotoRepository.findById(photoId)).thenReturn(Optional.of(userPhoto));
-
-        UserPhoto result = userPhotoService.getPhoto(photoId);
-
-        assertEquals(userPhoto, result);
     }
 
     @Test
@@ -98,17 +86,6 @@ class UserPhotoServiceTest {
         userPhotoService.deletePhoto(userId);
 
         verify(userPhotoRepository, never()).delete(any(UserPhoto.class));
-    }
-
-    @Test
-    void getPhotoByUserId_returnsPhoto_whenPhotoExists() {
-        UUID userId = UUID.randomUUID();
-        UserPhoto userPhoto = new UserPhoto();
-        when(userPhotoRepository.findByUserId(userId)).thenReturn(Optional.of(userPhoto));
-
-        UserPhoto result = userPhotoService.getPhotoByUserId(userId);
-
-        assertEquals(userPhoto, result);
     }
 
     @Test

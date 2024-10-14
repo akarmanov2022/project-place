@@ -36,6 +36,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.apache.commons:commons-lang3'
     implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:4.4.0'
+    implementation 'org.mapstruct:mapstruct:1.6.2'
+
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.2'
+
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'

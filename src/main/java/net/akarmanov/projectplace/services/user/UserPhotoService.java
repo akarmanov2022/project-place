@@ -1,16 +1,15 @@
 package net.akarmanov.projectplace.services.user;
 
-import net.akarmanov.projectplace.domain.UserPhoto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
 public interface UserPhotoService {
-    UserPhoto getPhoto(UUID photoId);
+    UserPhotoDto getPhoto(UUID photoId);
 
     void addPhotoToUser(UUID userId, MultipartFile file);
 
     void deletePhoto(UUID userId);
 
-    UserPhoto getPhotoByUserId(UUID userId);
+    UserPhotoDto getPhotoByUserId(UUID userId);
 }
