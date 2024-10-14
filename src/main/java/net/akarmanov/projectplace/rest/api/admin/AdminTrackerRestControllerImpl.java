@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.akarmanov.projectplace.rest.api.dto.UserDTO;
 import net.akarmanov.projectplace.services.admin.AdministrationService;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 public class AdminTrackerRestControllerImpl implements AdministrationRestController {
-
-    private final ModelMapper modelMapper;
 
     private final AdministrationService administrationService;
 
@@ -36,7 +33,6 @@ public class AdminTrackerRestControllerImpl implements AdministrationRestControl
     @Override
     public ResponseEntity<Page<UserDTO>> all(Pageable pageable) {
         var trackers = administrationService.getAllUsers(pageable);
-        var trackerDTOs = trackers.map(tracker -> modelMapper.map(tracker, UserDTO.class));
-        return ResponseEntity.ok(trackerDTOs);
+        return ResponseEntity.ok(trackers);
     }
 }
