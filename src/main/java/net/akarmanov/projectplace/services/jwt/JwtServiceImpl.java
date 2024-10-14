@@ -3,7 +3,7 @@ package net.akarmanov.projectplace.services.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.domain.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 

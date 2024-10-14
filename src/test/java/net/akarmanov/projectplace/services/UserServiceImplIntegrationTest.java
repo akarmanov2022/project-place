@@ -1,8 +1,8 @@
 package net.akarmanov.projectplace.services;
 
+import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.models.UserRole;
-import net.akarmanov.projectplace.persistence.entities.User;
-import net.akarmanov.projectplace.persistence.jpa.UserRepository;
+import net.akarmanov.projectplace.repos.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import net.akarmanov.projectplace.services.user.UserService;
 import net.akarmanov.projectplace.services.user.UserServiceImpl;

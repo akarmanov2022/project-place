@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services.user;
 
-import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;

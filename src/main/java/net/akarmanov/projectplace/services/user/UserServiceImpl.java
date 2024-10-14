@@ -2,8 +2,8 @@ package net.akarmanov.projectplace.services.user;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.persistence.entities.User;
-import net.akarmanov.projectplace.persistence.jpa.UserRepository;
+import net.akarmanov.projectplace.domain.User;
+import net.akarmanov.projectplace.repos.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.PhoneNumberExistsException;
 import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;

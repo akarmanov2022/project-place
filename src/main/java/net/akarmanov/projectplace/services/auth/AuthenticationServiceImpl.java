@@ -1,11 +1,11 @@
 package net.akarmanov.projectplace.services.auth;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.api.auth.JwtAuthenticationResponse;
-import net.akarmanov.projectplace.api.dto.SingInRequest;
-import net.akarmanov.projectplace.api.dto.SingUpRequest;
+import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.models.UserRole;
-import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.rest.api.auth.JwtAuthenticationResponse;
+import net.akarmanov.projectplace.rest.api.dto.SingInRequest;
+import net.akarmanov.projectplace.rest.api.dto.SingUpRequest;
 import net.akarmanov.projectplace.services.jwt.JwtService;
 import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.security.authentication.AuthenticationManager;

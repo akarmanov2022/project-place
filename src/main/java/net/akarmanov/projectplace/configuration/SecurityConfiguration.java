@@ -1,7 +1,7 @@
 package net.akarmanov.projectplace.configuration;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.filters.JwtAuthenticationFilter;
+import net.akarmanov.projectplace.rest.filters.JwtAuthenticationFilter;
 import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

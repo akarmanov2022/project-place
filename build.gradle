@@ -35,6 +35,7 @@ dependencies {
     implementation 'org.modelmapper:modelmapper:3.2.0'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.apache.commons:commons-lang3'
+    implementation 'io.github.wimdeblauwe:error-handling-spring-boot-starter:4.4.0'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
@@ -49,9 +50,13 @@ dependencies {
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
+    testCompileOnly 'org.projectlombok:lombok'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 tasks.named('test') {

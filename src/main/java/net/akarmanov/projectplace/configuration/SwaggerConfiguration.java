@@ -13,7 +13,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @OpenAPIDefinition(
         info = @Info(title = "Project Place API", version = "1.0"),
-        security = @SecurityRequirement(name = "bearerAuth")
+        security = @SecurityRequirement(
+                name = "bearerAuth", scopes = {
+                "read",
+                "write"
+        })
 )
 @SecurityScheme(
         name = "bearerAuth",

@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services.admin;
 
-import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

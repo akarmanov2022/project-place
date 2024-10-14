@@ -1,7 +1,7 @@
 package net.akarmanov.projectplace.services.admin;
 
 import lombok.RequiredArgsConstructor;
-import net.akarmanov.projectplace.persistence.entities.User;
+import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

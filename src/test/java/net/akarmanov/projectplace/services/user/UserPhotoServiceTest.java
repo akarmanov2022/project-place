@@ -1,9 +1,9 @@
 package net.akarmanov.projectplace.services.user;
 
-import net.akarmanov.projectplace.persistence.entities.User;
-import net.akarmanov.projectplace.persistence.entities.UserPhoto;
-import net.akarmanov.projectplace.persistence.jpa.UserPhotoRepository;
-import net.akarmanov.projectplace.persistence.jpa.UserRepository;
+import net.akarmanov.projectplace.domain.User;
+import net.akarmanov.projectplace.domain.UserPhoto;
+import net.akarmanov.projectplace.repos.UserPhotoRepository;
+import net.akarmanov.projectplace.repos.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.PhotoNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

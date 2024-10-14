@@ -1,6 +1,6 @@
 package net.akarmanov.projectplace.services.user;
 
-import net.akarmanov.projectplace.persistence.entities.UserPhoto;
+import net.akarmanov.projectplace.domain.UserPhoto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;

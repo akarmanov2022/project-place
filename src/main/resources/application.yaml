@@ -1,8 +1,4 @@
 spring:
-  profiles:
-    active: prom
----
-spring:
   application:
     name: project-place-backend
   datasource:
@@ -11,39 +7,29 @@ spring:
     username: ${DB_USERNAME:project-place}
     url: jdbc:postgresql://localhost:5432/project-place
   jpa:
-    database: postgresql
-    show-sql: true
     hibernate:
       ddl-auto: update
+    open-in-view: false
     properties:
       hibernate:
-        format_sql: true
-    open-in-view: false
-  config:
-    activate:
-      on-profile: develop
-
-app:
-  superadmin:
-    username: ${ADMIN_USERNAME:superadmin}
-    password: ${ADMIN_PASSWORD:superadmin}
----
-spring:
-  application:
-    name: project-place-backend
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    password: ${DB_PASSWORD:project-place}
-    username: ${DB_USERNAME:project-place}
-    url: jdbc:postgresql://localhost:5432/project-place
-  jpa:
-    database: postgresql
-    hibernate:
-      ddl-auto: update
-    open-in-view: false
-  config:
-    activate:
-      on-profile: prom
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        id:
+          new_generator_mappings: true
+  docker:
+    compose:
+      lifecycle-management: start-only
+error:
+  handling:
+    http-status-in-json-response: true
+    exception-logging: NO_LOGGING
+    full-stacktrace-http-statuses: 5xx
+    log-levels:
+      5xx: ERROR
+springdoc:
+  paths-to-match: /api/**
+  enable-spring-security: true
 
 app:
   superadmin:
