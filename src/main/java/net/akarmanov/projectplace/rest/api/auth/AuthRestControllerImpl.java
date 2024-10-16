@@ -13,9 +13,9 @@ class AuthRestControllerImpl implements AuthRestController {
     private final AuthenticationService authenticationService;
 
     @Override
-    public ResponseEntity<JwtAuthenticationResponse> singUp(SingUpRequest singUpRequest) {
-        var response = authenticationService.singUp(singUpRequest);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<Void> singUp(SingUpRequest singUpRequest) {
+        authenticationService.singUp(singUpRequest);
+        return ResponseEntity.ok().build();
     }
 
     @Override

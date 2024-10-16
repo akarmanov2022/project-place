@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public interface AuthRestController {
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sing-up")
-    ResponseEntity<JwtAuthenticationResponse> singUp(@RequestBody @Valid SingUpRequest singUpRequest);
+    ResponseEntity<Void> singUp(@RequestBody @Valid SingUpRequest singUpRequest);
 
     @Operation(summary = "Аутентификация пользователя")
     @PostMapping("/sing-in")
