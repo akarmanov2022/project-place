@@ -15,5 +15,6 @@ public record UserDTO(
         String phoneNumber,
         String telegramId,
         UserRole role,
-        UserPhotoDto photo) {
+        UserPhotoDto photo,
+        boolean enabled) {
 }

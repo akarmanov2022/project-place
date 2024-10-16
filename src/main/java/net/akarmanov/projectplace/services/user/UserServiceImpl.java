@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.repos.UserRepository;
+import net.akarmanov.projectplace.services.exceptions.NoMatchesPasswordException;
 import net.akarmanov.projectplace.services.exceptions.PhoneNumberExistsException;
 import net.akarmanov.projectplace.services.exceptions.TelegramIdExistsException;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -20,6 +22,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User getUser(UUID id) {
@@ -93,6 +97,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public void disableUser(UUID userId) {
         changeUserState(userId, false);
+    }
+
+    @Override
+    public void changePassword(String oldPassword, String newPassword) {
+        var user = getCurrentUser();
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new NoMatchesPasswordException();
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     private void changeUserState(UUID userId, boolean enabled) {

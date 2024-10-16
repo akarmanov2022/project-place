@@ -29,4 +29,6 @@ public interface UserService {
     void enableUser(UUID userId);
 
     void disableUser(UUID userId);
+
+    void changePassword(String oldPassword, String newPassword);
 }

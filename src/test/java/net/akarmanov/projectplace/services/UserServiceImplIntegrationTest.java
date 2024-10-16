@@ -5,14 +5,11 @@ import net.akarmanov.projectplace.models.UserRole;
 import net.akarmanov.projectplace.repos.UserRepository;
 import net.akarmanov.projectplace.services.exceptions.UserNotFoundException;
 import net.akarmanov.projectplace.services.user.UserService;
-import net.akarmanov.projectplace.services.user.UserServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
@@ -20,21 +17,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DataJpaTest
+@SpringBootTest
 @ActiveProfiles("test")
 class UserServiceImplIntegrationTest {
-
-    @TestConfiguration
-    static class TestContextConfiguration {
-
-        @Autowired
-        private UserRepository userRepository;
-
-        @Bean
-        public UserService userService() {
-            return new UserServiceImpl(userRepository);
-        }
-    }
 
     @Autowired
     private UserService userService;
