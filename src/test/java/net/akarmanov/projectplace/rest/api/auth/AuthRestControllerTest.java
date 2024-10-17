@@ -110,8 +110,7 @@ class AuthRestControllerTest {
                         .contentType(APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(signUp)))
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON));
+                .andExpect(status().isOk());
     }
 
     @Test

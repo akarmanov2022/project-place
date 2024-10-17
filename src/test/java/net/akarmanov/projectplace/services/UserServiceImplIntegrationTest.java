@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.TestPropertySource;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -19,6 +20,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@TestPropertySource(
+        properties = {
+                "JWT_SECRET=12345678905675675674564564566756756756745645656"
+        })
 class UserServiceImplIntegrationTest {
 
     @Autowired

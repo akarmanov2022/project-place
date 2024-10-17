@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
@@ -35,6 +34,8 @@ import static net.akarmanov.projectplace.models.UserRole.*;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     private final UserService userService;
+
+    private final PasswordEncoder passwordEncoder;
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
@@ -69,7 +70,7 @@ public class SecurityConfiguration {
     private AuthenticationProvider authenticationProvider() {
         var daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userService.getDetailsService());
-        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
         return daoAuthenticationProvider;
     }
 
@@ -87,11 +88,6 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public RoleHierarchy roleHierarchy() {
         var roleHierarchy = RoleHierarchyUtils.roleHierarchyFromMap(Map.of(
                 ADMIN.toRoleName(), List.of(TRACKER.toRoleName()),
@@ -101,6 +97,6 @@ public class SecurityConfiguration {
 
     @Bean
     public SuperAdminSetupConfigurer superAdminSetupConfigurer() {
-        return new SuperAdminSetupConfigurer(userService, passwordEncoder());
+        return new SuperAdminSetupConfigurer(userService, passwordEncoder);
     }
 }
