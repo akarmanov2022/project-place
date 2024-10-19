@@ -17,9 +17,6 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
-  docker:
-    compose:
-      lifecycle-management: start-only
 error:
   handling:
     http-status-in-json-response: true
