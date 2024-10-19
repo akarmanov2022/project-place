@@ -12,12 +12,13 @@ services:
 
   backend:
     container_name: project-place-backend
-    build: .
-    command: ./gradlew bootRun
+    build:
+      context: .
+      dockerfile: Dockerfile
     depends_on:
       - postgres
     environment:
-      JWT_SECRET: // hash
+      #      JWT_SECRET: // hash
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/project-place
       SPRING_DATASOURCE_USERNAME: project-place
       SPRING_DATASOURCE_PASSWORD: project-place
@@ -25,6 +26,7 @@ services:
       - '8080:8080'
     volumes:
       - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
     working_dir: /app
 
 volumes:
