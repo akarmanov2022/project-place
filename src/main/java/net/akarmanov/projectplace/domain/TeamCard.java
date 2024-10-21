@@ -1,8 +1,8 @@
 package net.akarmanov.projectplace.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import net.akarmanov.projectplace.models.TeamCardStatus;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.util.Set;
@@ -11,6 +11,9 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "team_cards")
 public class TeamCard {
 
@@ -27,7 +30,8 @@ public class TeamCard {
     private String description;
 
     @Column(length = 32)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private TeamCardStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
