@@ -40,4 +40,10 @@ public class TeamCardsRestControllerImpl implements TeamCardsRestController {
         var teamCard = teamCardsService.getTeamCard(id);
         return ResponseEntity.ok(teamCard);
     }
+
+    @Override
+    public ResponseEntity<Void> deleteTeamCard(UUID id) {
+        teamCardsService.deleteTeamCard(id);
+        return ResponseEntity.noContent().build();
+    }
 }

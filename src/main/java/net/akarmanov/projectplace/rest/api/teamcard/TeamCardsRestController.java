@@ -8,6 +8,7 @@ import net.akarmanov.projectplace.rest.api.teamcard.dto.TeamCardCreateOrUpdateDt
 import net.akarmanov.projectplace.rest.api.teamcard.dto.TeamCardDto;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,27 @@ public interface TeamCardsRestController {
 
     @GetMapping(produces = "application/json")
     @Operation(summary = "Получение списка карточек команд")
-    ResponseEntity<PagedModel<TeamCardDto>> getTeamCards(@RequestParam String name, @RequestParam String status,
-                                                         @RequestParam @ParameterObject Pageable pageable);
+    ResponseEntity<PagedModel<TeamCardDto>> getTeamCards(
+            @Parameter(description = "Название карточки команды")
+            @RequestParam(required = false)
+            String name,
+            @Parameter(description = "Статус карточки команды")
+            @RequestParam(required = false)
+            String status,
+            @ParameterObject
+            @PageableDefault
+            Pageable pageable);
 
     @GetMapping(value = "/get", produces = "application/json")
     @Operation(summary = "Получение карточки команды")
     ResponseEntity<TeamCardDto> getTeamCard(
+            @Parameter(description = "Идентификатор карточки команды", example = "123e4567-e89b-12d3-a456-426614174000")
+            @RequestParam
+            UUID id);
+
+    @DeleteMapping(value = "/delete")
+    @Operation(summary = "Удаление карточки команды")
+    ResponseEntity<Void> deleteTeamCard(
             @Parameter(description = "Идентификатор карточки команды", example = "123e4567-e89b-12d3-a456-426614174000")
             @RequestParam
             UUID id);

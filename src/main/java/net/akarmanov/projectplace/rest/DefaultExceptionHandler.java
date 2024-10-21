@@ -1,6 +1,7 @@
 package net.akarmanov.projectplace.rest;
 
 import jakarta.validation.ConstraintViolationException;
+import net.akarmanov.projectplace.services.exceptions.PPNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -56,5 +57,16 @@ public class DefaultExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(restError);
     }
 
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(PPNotFoundException.class)
+    public ResponseEntity<RestError> handlePPNotFoundException(PPNotFoundException ex) {
+        var restError = RestError.builder()
+                .code(HttpStatus.NOT_FOUND.toString())
+                .message(ex.getMessage())
+                .build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(restError);
+    }
 
 }

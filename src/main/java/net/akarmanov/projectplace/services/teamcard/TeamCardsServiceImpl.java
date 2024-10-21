@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static net.akarmanov.projectplace.domain.spec.TeamCardSpecification.nameEquals;
-import static net.akarmanov.projectplace.domain.spec.TeamCardSpecification.statusEquals;
+import static net.akarmanov.projectplace.domain.spec.TeamCardSpecification.*;
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
@@ -55,8 +55,10 @@ public class TeamCardsServiceImpl implements TeamCardsService {
 
     @Override
     public Page<TeamCardDto> getTeamCards(String name, String status, Pageable pageable) {
+        var user = userService.getCurrentUser();
         var page = teamCardsRepository.findAll(
-                nameEquals(name).or(statusEquals(status)), pageable);
+                where(nameLike(name).or(statusEquals(status)))
+                        .and(userEquals(user.getId())), pageable);
         return page.map(teamCardMapper::mapToDto);
     }
 
@@ -64,5 +66,14 @@ public class TeamCardsServiceImpl implements TeamCardsService {
     public TeamCardDto getTeamCard(UUID id) {
         var teamCard = get(id);
         return teamCardMapper.mapToDto(teamCard);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTeamCard(UUID id) {
+        var user = userService.getCurrentUser();
+        var teamCard = teamCardsRepository.findByIdAndUserId(id, user.getId())
+                .orElseThrow(() -> new TeamCardNotFoundException(id));
+        teamCardsRepository.delete(teamCard);
     }
 }

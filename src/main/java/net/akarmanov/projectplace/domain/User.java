@@ -69,7 +69,7 @@ public class User implements UserDetails {
     @ManyToMany(mappedBy = "streamsUserUsers")
     private Set<Stream> streamsUserStreams;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserPhoto photo;
 
     @Override

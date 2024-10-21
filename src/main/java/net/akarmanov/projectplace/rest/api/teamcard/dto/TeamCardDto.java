@@ -3,7 +3,6 @@ package net.akarmanov.projectplace.rest.api.teamcard.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import net.akarmanov.projectplace.models.TeamCardStatus;
-import net.akarmanov.projectplace.rest.api.dto.UserDTO;
 
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ public record TeamCardDto(
         String description,
         @Schema(description = "Статус карточки команды", example = "Все ок")
         TeamCardStatus status,
-        @Schema(description = "Пользователь, создавший карточку команды")
-        UserDTO user
+        @Schema(description = "Идентификатор пользователя", example = "123e4567-e89b-12d3-a456-426614174000")
+        UUID userId
 ) {
 }

@@ -64,8 +64,7 @@ class TeamCardsRestControllerImplTest extends BaseApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.name", is("Test")))
-                .andExpect(jsonPath("$.user.id", is(user.getId().toString())));
+                .andExpect(jsonPath("$.name", is("Test")));
     }
 
     @Test
@@ -97,7 +96,6 @@ class TeamCardsRestControllerImplTest extends BaseApplicationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(teamCard.getId().toString())))
-                .andExpect(jsonPath("$.name", is("Updated name")))
-                .andExpect(jsonPath("$.user.id", is(user.getId().toString())));
+                .andExpect(jsonPath("$.name", is("Updated name")));
     }
 }

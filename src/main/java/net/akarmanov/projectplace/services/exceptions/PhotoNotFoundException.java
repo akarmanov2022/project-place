@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.util.UUID;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class PhotoNotFoundException extends RuntimeException {
+public class PhotoNotFoundException extends PPNotFoundException {
     public PhotoNotFoundException(UUID photoId) {
         super("Фотография пользователя с ID " + photoId + " не найдена!");
     }

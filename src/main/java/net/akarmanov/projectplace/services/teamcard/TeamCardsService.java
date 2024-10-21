@@ -15,4 +15,6 @@ public interface TeamCardsService {
     Page<TeamCardDto> getTeamCards(String name, String status, Pageable pageable);
 
     TeamCardDto getTeamCard(UUID id);
+
+    void deleteTeamCard(UUID id);
 }
