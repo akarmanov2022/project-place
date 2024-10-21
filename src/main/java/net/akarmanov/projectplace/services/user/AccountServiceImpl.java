@@ -10,37 +10,22 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    public static final UserMapper USER_MAPPER = UserMapper.INSTANCE;
-
     private final UserService userService;
+
+    private final UserMapper userMapper;
 
     @Override
     public UserDTO getCurrentUserInfo() {
         var user = userService.getCurrentUser();
-        return USER_MAPPER.toDto(user);
+        return userMapper.mapUserToDto(user);
     }
 
     @Override
     public UserDTO updateUserInfo(UserUpdateDTO userDTO) {
         var user = userService.getCurrentUser();
-        if (userDTO.phoneNumber() != null) {
-            user.setPhoneNumber(userDTO.phoneNumber());
-        }
-        if (userDTO.firstName() != null) {
-            user.setFirstName(userDTO.firstName());
-        }
-        if (userDTO.middleName() != null) {
-            user.setMiddleName(userDTO.middleName());
-        }
-        if (userDTO.lastName() != null) {
-            user.setLastName(userDTO.lastName());
-        }
-        if (userDTO.telegramId() != null) {
-            user.setTelegramId(userDTO.telegramId());
-        }
-
+        userMapper.updateFromDto(userDTO, user);
         var saved = userService.updateUser(user.getId(), user);
-        return USER_MAPPER.toDto(saved);
+        return userMapper.mapUserToDto(saved);
     }
 
     @Override

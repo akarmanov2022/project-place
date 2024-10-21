@@ -18,17 +18,17 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class UserPhotoServiceImpl implements UserPhotoService {
 
-    public static final UserPhotoMapper USER_PHOTO_MAPPER = UserPhotoMapper.INSTANCE;
-
     private final UserPhotoRepository userPhotoRepository;
 
     private final UserRepository userRepository;
+
+    private final UserPhotoMapper userPhotoMapper;
 
     @Override
     public UserPhotoDto getPhoto(UUID photoId) {
         var userPhoto = userPhotoRepository.findById(photoId)
                 .orElseThrow(() -> new PhotoNotFoundException(photoId));
-        return USER_PHOTO_MAPPER.toModel(userPhoto);
+        return userPhotoMapper.toModel(userPhoto);
     }
 
     @SneakyThrows
@@ -55,7 +55,7 @@ class UserPhotoServiceImpl implements UserPhotoService {
     public UserPhotoDto getPhotoByUserId(UUID userId) {
         var userPhoto = userPhotoRepository.findByUserId(userId)
                 .orElseThrow(() -> new PhotoNotFoundException(userId));
-        return USER_PHOTO_MAPPER.toModel(userPhoto);
+        return userPhotoMapper.toModel(userPhoto);
     }
 
     @SneakyThrows

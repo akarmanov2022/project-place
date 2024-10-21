@@ -2,15 +2,23 @@ package net.akarmanov.projectplace.mapping;
 
 import net.akarmanov.projectplace.domain.User;
 import net.akarmanov.projectplace.rest.api.dto.UserDTO;
+import net.akarmanov.projectplace.rest.api.dto.UserUpdateDTO;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(
+        componentModel = "spring",
+        uses = {UserPhotoMapper.class})
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserDTO toDto(User user);
+    UserDTO mapUserToDto(User user);
 
-    User toEntity(UserDTO userDTO);
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "userTeamCards", ignore = true)
+    @Mapping(target = "streamsUserStreams", ignore = true)
+    User mapDtoToUser(UserDTO userDTO);
+
+    void updateFromDto(UserUpdateDTO userDTO, @MappingTarget User user);
 }

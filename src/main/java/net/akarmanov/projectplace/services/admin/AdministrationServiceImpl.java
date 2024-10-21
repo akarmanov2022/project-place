@@ -14,9 +14,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 class AdministrationServiceImpl implements AdministrationService {
 
-    public static final UserMapper USER_MAPPER = UserMapper.INSTANCE;
-
     private final UserService userService;
+
+    private final UserMapper userMapper;
 
     @Override
     public void confirmUser(UUID userId) {
@@ -31,6 +31,6 @@ class AdministrationServiceImpl implements AdministrationService {
     @Override
     public Page<UserDTO> getAllUsers(Pageable pageable) {
         var users = userService.findAll(pageable);
-        return users.map(USER_MAPPER::toDto);
+        return users.map(userMapper::mapUserToDto);
     }
 }
