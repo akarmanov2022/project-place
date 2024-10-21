@@ -1,35 +1,50 @@
 package net.akarmanov.projectplace.configuration;
 
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
-import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
-import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
-import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.security.SecurityScheme.Type;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(
-        info = @Info(title = "Project Place API", version = "1.0"),
-        security = @SecurityRequirement(
-                name = "bearerAuth", scopes = {
-                "read",
-                "write"
-        })
-)
-@SecurityScheme(
-        name = "bearerAuth",
-        type = SecuritySchemeType.HTTP,
-        scheme = "bearer",
-        in = SecuritySchemeIn.HEADER,
-        bearerFormat = "JWT"
-)
 public class SwaggerConfiguration {
 
     @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI();
+    public GroupedOpenApi baseOpenAPI() {
+        return GroupedOpenApi.builder()
+                .group("main")
+                .pathsToMatch("/api/v1/**")
+                .pathsToExclude("/api/v1/admin/**")
+                .addOpenApiCustomizer(openAPI -> openAPI
+                        .info(new Info().title("Project Place API").version("1.0"))
+                        .schemaRequirement("bearerAuth", new SecurityScheme()
+                                .type(Type.HTTP)
+                                .scheme("bearer")
+                                .name("Authorization")
+                                .bearerFormat("JWT")
+                                .in(SecurityScheme.In.HEADER))
+                        .addSecurityItem(new SecurityRequirement().addList("bearerAuth")))
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi adminAPI() {
+        return GroupedOpenApi.builder()
+                .group("admin")
+                .pathsToMatch("/api/v1/admin/**")
+                .pathsToMatch("/api/v1/auth/**")
+                .packagesToScan("net.akarmanov.projectplace.rest.api.admin", "net.akarmanov.projectplace.rest.api.auth")
+                .addOpenApiCustomizer(openAPI -> openAPI
+                        .info(new Info().title("Project Place Admin API").version("1.0"))
+                        .schemaRequirement("bearerAuth", new SecurityScheme()
+                                .type(Type.HTTP)
+                                .scheme("bearer")
+                                .name("Authorization")
+                                .bearerFormat("JWT")
+                                .in(SecurityScheme.In.HEADER))
+                        .addSecurityItem(new SecurityRequirement().addList("bearerAuth")))
+                .build();
     }
 }

@@ -63,13 +63,13 @@ public class User implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<TeamCard> userTeamCards;
 
     @ManyToMany(mappedBy = "streamsUserUsers")
     private Set<Stream> streamsUserStreams;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private UserPhoto photo;
 
     @Override
