@@ -17,4 +17,14 @@ public interface TeamCardsService {
     TeamCardDto getTeamCard(UUID id);
 
     void deleteTeamCard(UUID id);
+
+    TeamCardDto createTeamCard(TeamCardCreateOrUpdateDto teamCardDto, UUID userId);
+
+    TeamCardDto updateTeamCard(UUID teamCardId, TeamCardCreateOrUpdateDto teamCardDto, UUID userId);
+
+    Page<TeamCardDto> findAll(String name, String status, Pageable pageable);
+
+    TeamCardDto getTeamCard(UUID id, UUID userId);
+
+    void deleteTeamCard(UUID id, UUID userId);
 }

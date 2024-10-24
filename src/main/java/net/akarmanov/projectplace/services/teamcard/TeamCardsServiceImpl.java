@@ -12,6 +12,7 @@ import net.akarmanov.projectplace.services.exceptions.TeamCardNotFoundException;
 import net.akarmanov.projectplace.services.user.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -75,5 +76,49 @@ public class TeamCardsServiceImpl implements TeamCardsService {
         var teamCard = teamCardsRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new TeamCardNotFoundException(id));
         teamCardsRepository.delete(teamCard);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public TeamCardDto createTeamCard(TeamCardCreateOrUpdateDto teamCardDto, UUID userId) {
+        var teamCard = teamCardMapper.mapToEntity(teamCardDto);
+        teamCard.setUser(userService.getUser(userId));
+        teamCard.setStatus(TeamCardStatus.OK);
+        teamCard = teamCardsRepository.save(teamCard);
+        return teamCardMapper.mapToDto(teamCard);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public TeamCardDto updateTeamCard(UUID teamCardId, TeamCardCreateOrUpdateDto teamCardDto, UUID userId) {
+        var teamCard = get(teamCardId, userId);
+        teamCardMapper.updateFromDto(teamCardDto, teamCard);
+        teamCard.setUser(userService.getUser(userId));
+        teamCard = teamCardsRepository.save(teamCard);
+        return teamCardMapper.mapToDto(teamCard);
+    }
+
+    @Override
+    public Page<TeamCardDto> findAll(String name, String status, Pageable pageable) {
+        var page = teamCardsRepository.findAll(
+                where(nameLike(name).or(statusEquals(status))), pageable);
+        return page.map(teamCardMapper::mapToDto);
+    }
+
+    @Override
+    public TeamCardDto getTeamCard(UUID id, UUID userId) {
+        var teamCard = get(id, userId);
+        return teamCardMapper.mapToDto(teamCard);
+    }
+
+    @Override
+    @Transactional
+    public void deleteTeamCard(UUID id, UUID userId) {
+        teamCardsRepository.deleteByIdAndUserId(id, userId);
+    }
+
+    private TeamCard get(UUID teamCardId, UUID userId) {
+        return teamCardsRepository.findByIdAndUserId(teamCardId, userId)
+                .orElseThrow(() -> new TeamCardNotFoundException(teamCardId));
     }
 }
