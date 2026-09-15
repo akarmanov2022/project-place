@@ -7,7 +7,7 @@ import java.util.Properties;
 import org.junit.jupiter.api.Test;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templateresolver.StringTemplateResolver;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +24,7 @@ class DefaultEmailServiceTest {
         var message = new MimeMessage(Session.getInstance(new Properties()));
         when(sender.createMimeMessage()).thenReturn(message);
         doThrow(new MailSendException("SMTP unavailable")).when(sender).send(message);
-        var templates = new TemplateEngine();
+        var templates = new SpringTemplateEngine();
         templates.setTemplateResolver(new StringTemplateResolver());
         var service = new DefaultEmailService(sender, templates);
 
@@ -38,7 +38,7 @@ class DefaultEmailServiceTest {
         var sender = mock(JavaMailSender.class);
         var message = new MimeMessage(Session.getInstance(new Properties()));
         when(sender.createMimeMessage()).thenReturn(message);
-        var templates = new TemplateEngine();
+        var templates = new SpringTemplateEngine();
         templates.setTemplateResolver(new StringTemplateResolver());
         var service = new DefaultEmailService(sender, templates);
 
