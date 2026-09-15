@@ -5,7 +5,7 @@ app:
   after-login-url: ${AFTER_LOGIN_URL:http://127.0.0.1:8081}
   after-logout-uri: ${AFTER_LOGOUT_URI:http://127.0.0.1:8081}
   logout-uri: ${LOGOUT_URI:http://localhost:9000/connect/logout}
-  sso-registration-url: ${SSO_REGISTRATION_URL:http://localhost:9000/client/registration}
+  sso-registration-url: ${SSO_REGISTRATION_URL:${SSO_URI:http://localhost:9000}/client/registration}
   session-cookie:
     same-site: ${SESSION_COOKIE_SAME_SITE:Lax}
     secure: ${SESSION_COOKIE_SECURE:false}
@@ -83,7 +83,7 @@ spring:
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             scope:
               - email
-              - profile 
+              - profile
           yandex:
             client-id: ${YANDEX_CLIENT_ID}
             client-secret: ${YANDEX_CLIENT_SECRET}

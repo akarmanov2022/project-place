@@ -122,10 +122,10 @@ const Register = () => {
 
         // Если параметры есть, обновляем соответствующие стейты
         if (emailParam) {
-            setEmail(decodeURIComponent(emailParam));
+            setEmail(emailParam);
         }
         if (nameParam) {
-            setFullName(decodeURIComponent(nameParam.replace(/\+/g, ' ')));
+            setFullName(nameParam);
         }
     }, []);
 

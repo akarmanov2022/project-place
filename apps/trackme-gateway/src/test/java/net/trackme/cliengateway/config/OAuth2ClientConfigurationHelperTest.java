@@ -247,4 +247,28 @@ class OAuth2ClientConfigurationHelperTest {
         assertNotNull(result);
         assertTrue(result.startsWith("http://localhost:9000/client/registration"));
     }
+
+    @Test
+    void productionRegistrationUrlPreservesHttpsAndNormalizesIssuerTrailingSlash() throws Exception {
+        var prodProperties = new AppProperties(
+                "https://trackme.example.org", "https://trackme.example.org",
+                "https://trackme.example.org/sso/connect/logout",
+                "https://trackme.example.org/sso//client/registration",
+                appProperties.cors(), appProperties.sessionCookie());
+        var prodConfiguration = new OAuth2ClientConfiguration(clientRegistrationRepository, prodProperties);
+        var user = mock(OAuth2User.class);
+        when(user.getAttributes()).thenReturn(Map.of(
+                "sub", "123", "email", "user+tag@example.org", "name", "Test + 100%"));
+        var method = OAuth2ClientConfiguration.class
+                .getDeclaredMethod("buildOAuthRegistrationUrl", OAuth2User.class);
+        method.setAccessible(true);
+
+        var result = java.net.URI.create((String) method.invoke(prodConfiguration, user));
+
+        assertEquals("https", result.getScheme());
+        assertEquals("trackme.example.org", result.getHost());
+        assertEquals("/sso/client/registration", result.getPath());
+        assertTrue(result.getRawQuery().contains("email=user%2Btag%40example.org"));
+        assertTrue(result.getRawQuery().contains("name=Test%20%2B%20100%25"));
+    }
 }

@@ -182,11 +182,14 @@ public class OAuth2ClientConfiguration {
             email = (String) attributes.getOrDefault("default_email", attributes.get(ATTR_EMAIL));
             name = (String) attributes.getOrDefault("real_name", attributes.get("display_name"));
         }
-        return UriComponentsBuilder.fromUriString(appProperties.ssoRegistrationUrl())
-                .queryParam(ATTR_EMAIL, email != null ? email : "")
-                .queryParam("name", name != null ? name : "")
+        var registrationUri = java.net.URI.create(appProperties.ssoRegistrationUrl());
+        return UriComponentsBuilder.fromUri(registrationUri)
+                .replacePath(registrationUri.getPath().replaceAll("/{2,}", "/"))
+                .queryParam(ATTR_EMAIL, "{email}")
+                .queryParam("name", "{name}")
                 .encode()
-                .build()
+                .buildAndExpand(Map.of(ATTR_EMAIL, email != null ? email : "",
+                        "name", name != null ? name : ""))
                 .toUriString();
     }
 }

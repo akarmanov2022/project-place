@@ -16,6 +16,8 @@ import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -115,10 +117,11 @@ class MeetingReminderServiceIT {
         meetingRepository.deleteAll();
     }
 
-    @Test
-    void sendReminders_scheduledMeetingIn3Days_producesReminderEvent() {
+    @ParameterizedTest
+    @ValueSource(ints = {1, 3})
+    void sendReminders_scheduledMeeting_producesReminderEvent(int daysAhead) {
         ZoneId tomsk = ZoneId.of("Asia/Tomsk");
-        OffsetDateTime startDate = LocalDate.now(tomsk).plusDays(3)
+        OffsetDateTime startDate = LocalDate.now(tomsk).plusDays(daysAhead)
                 .atTime(12, 0).atZone(tomsk).toOffsetDateTime();
 
         meetingRepository.save(Meeting.builder()
@@ -129,16 +132,18 @@ class MeetingReminderServiceIT {
                 .teamCardId(UUID.randomUUID())
                 .build());
 
-        try (KafkaConsumer<String, String> consumer = createConsumer("it-group-produce-1", "earliest")) {
+        try (KafkaConsumer<String, String> consumer = createConsumer("it-group-produce-" + daysAhead, "latest")) {
             consumer.subscribe(List.of(REMINDER_TOPIC));
             awaitPartitionAssignment(consumer);
-            consumer.seekToBeginning(consumer.assignment()); // reset to beginning regardless of prior messages
+            consumer.seekToEnd(consumer.assignment());
+            consumer.assignment().forEach(consumer::position);
 
             meetingReminderService.sendReminders();
             ConsumerRecords<String, String> records = consumer.poll(Duration.ofSeconds(10));
             assertThat(records.count()).isEqualTo(1);
             String payload = records.iterator().next().value();
-            assertThat(payload).contains("tracker1").contains("TeamAlpha");
+            assertThat(payload).contains("tracker1").contains("TeamAlpha")
+                    .contains("\"daysUntilMeeting\":" + daysAhead);
         }
     }
 
